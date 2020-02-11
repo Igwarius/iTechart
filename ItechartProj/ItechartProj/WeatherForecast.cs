@@ -1,6 +1,6 @@
 using System;
 
-namespace Project
+namespace ItechartProj
 {
     public class WeatherForecast
     {
