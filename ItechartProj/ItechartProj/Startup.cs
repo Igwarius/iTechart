@@ -1,15 +1,14 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using ItechartProj.DAL.Context;
+using ItechartProj.Services.Interfaces;
+using ItechartProj.Services.Services;
+using ItechartProj.DAL.Repository.Interfaces;
+using ItechartProj.DAL.Repository.Classes;
 
 namespace ItechartProj
 {
@@ -25,7 +24,11 @@ namespace ItechartProj
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IUserRepository, UserRepository>();
             services.AddControllers();
+            services.AddDbContext<Contexts>(options =>
+           options.UseSqlServer(Configuration.GetConnectionString("Context")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -47,5 +50,6 @@ namespace ItechartProj
                 endpoints.MapControllers();
             });
         }
+
     }
 }
