@@ -9,7 +9,9 @@ using ItechartProj.Services.Interfaces;
 using ItechartProj.Services.Services;
 using ItechartProj.DAL.Repository.Interfaces;
 using ItechartProj.DAL.Repository.Classes;
-
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using ItechartProj.Services;
 namespace ItechartProj
 {
     public class Startup
@@ -18,7 +20,7 @@ namespace ItechartProj
         {
             Configuration = configuration;
         }
-
+      
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -27,17 +29,57 @@ namespace ItechartProj
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddControllers();
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                   .AddJwtBearer(options =>
+                   {
+                       options.RequireHttpsMetadata = false;
+                       options.TokenValidationParameters = new TokenValidationParameters
+                       {
+                            // укзывает, будет ли валидироваться издатель при валидации токена
+                            ValidateIssuer = true,
+                            // строка, представляющая издателя
+                            ValidIssuer = AuthOptions.ISSUER,
+
+                            // будет ли валидироваться потребитель токена
+                            ValidateAudience = true,
+                            // установка потребителя токена
+                            ValidAudience = AuthOptions.AUDIENCE,
+                            // будет ли валидироваться время существования
+                            ValidateLifetime = true,
+
+                            // установка ключа безопасности
+                            IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey(),
+                            // валидация ключа безопасности
+                            ValidateIssuerSigningKey = true,
+                       };
+                   });
+
+
+
+            services.AddCors();
+         
             services.AddDbContext<Contexts>(options =>
            options.UseSqlServer(Configuration.GetConnectionString("Context")));
-        }
+            
+            }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseCors(opts => opts
+                 .WithOrigins(
+                 "http://localhost:4200")
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowCredentials()
+                );
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
+            app.UseAuthentication();
+
+            app.UseAuthorization();
 
             app.UseHttpsRedirection();
 
@@ -49,6 +91,7 @@ namespace ItechartProj
             {
                 endpoints.MapControllers();
             });
+            
         }
 
     }

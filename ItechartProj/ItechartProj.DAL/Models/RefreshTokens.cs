@@ -6,13 +6,14 @@ using System.Text;
 
 namespace ItechartProj.DAL.Models
 {
-    public class User
+   public class RefreshTokens
     {
         [Key]
-        [StringLength(maximumLength: 15, MinimumLength = 3)]
+        [ForeignKey("User")]
         public string Login { get; set; }
-        [Required]
-        [Column(TypeName = "varchar(200)")]
-        public string password { get; set; }
+
+        public string RefreshToken { get; set; }
+
+        public User User { get; set; }
     }
 }

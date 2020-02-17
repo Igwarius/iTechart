@@ -3,33 +3,22 @@ using ItechartProj.DAL.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ItechartProj.DAL.Migrations
 {
     [DbContext(typeof(Contexts))]
-    partial class ContextModelSnapshot : ModelSnapshot
+    [Migration("20200217110336_Mi")]
+    partial class Mi
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "3.1.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-            modelBuilder.Entity("ItechartProj.DAL.Models.RefreshTokens", b =>
-                {
-                    b.Property<string>("Login")
-                        .HasColumnType("nvarchar(15)");
-
-                    b.Property<string>("RefreshToken")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Login");
-
-                    b.ToTable("RefreshTokens");
-                });
 
             modelBuilder.Entity("ItechartProj.DAL.Models.User", b =>
                 {
@@ -39,20 +28,12 @@ namespace ItechartProj.DAL.Migrations
 
                     b.Property<string>("password")
                         .IsRequired()
-                        .HasColumnType("varchar(200)");
+                        .HasColumnType("nvarchar(600)")
+                        .HasMaxLength(600);
 
                     b.HasKey("Login");
 
                     b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("ItechartProj.DAL.Models.RefreshTokens", b =>
-                {
-                    b.HasOne("ItechartProj.DAL.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("Login")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }
