@@ -9,6 +9,7 @@ namespace ItechartProj.DAL.Context
     {
         public DbSet<RefreshTokens> RefreshTokens { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<News> Newss { get; set; }
         public Contexts(DbContextOptions<Contexts> options)
             : base(options)
         {

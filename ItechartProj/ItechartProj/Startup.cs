@@ -28,6 +28,8 @@ namespace ItechartProj
         {
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<INewssSevice, NewssService>();
+            services.AddTransient<INewssRepository, NewssRepository>();
             services.AddControllers();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                    .AddJwtBearer(options =>
