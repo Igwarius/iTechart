@@ -4,14 +4,16 @@ using ItechartProj.DAL.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ItechartProj.DAL.Migrations
 {
     [DbContext(typeof(Contexts))]
-    partial class ContextModelSnapshot : ModelSnapshot
+    [Migration("20200221113406_AddComents")]
+    partial class AddComents
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

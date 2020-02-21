@@ -15,10 +15,10 @@ namespace ItechartProj.Services.Services
         private readonly IRefreshTokensRepository refreshTokensRepository;
         private readonly IUserRepository userRepository;
 
-        public UserService(IUserRepository userRepository)
+        public UserService(IUserRepository userRepository, IRefreshTokensRepository refreshTokensRepository)
         {
             this.userRepository = userRepository;
-
+            this.refreshTokensRepository = refreshTokensRepository;
         }
         public async Task<IEnumerable<User>> GetUsers()
         {
@@ -64,14 +64,17 @@ namespace ItechartProj.Services.Services
             if (jwttoken != null)
             {
                 var newRefreshToken = TokenService.GenerateRefreshToken();
-               // await refreshTokensRepository.SaveRefreshToken(founduser.Login, newRefreshToken);
+                 await refreshTokensRepository.SaveRefreshToken(founduser.Login, newRefreshToken);
 
                 var tokens = new
                 {
                     token = jwttoken,
                     refreshToken = newRefreshToken
                 };
+              
+
                 return tokens;
+
             }
             return null;
         }

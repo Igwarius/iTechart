@@ -12,6 +12,8 @@ using ItechartProj.DAL.Repository.Classes;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using ItechartProj.Services;
+using WebServer.Services.Services;
+
 namespace ItechartProj
 {
     public class Startup
@@ -30,6 +32,9 @@ namespace ItechartProj
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<INewssSevice, NewssService>();
             services.AddTransient<INewssRepository, NewssRepository>();
+            services.AddTransient<IRefreshTokensRepository, RefreshTokensRepository>();
+            services.AddTransient<IRefreshTokensService, RefreshTokenService>();
+            
             services.AddControllers();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                    .AddJwtBearer(options =>
