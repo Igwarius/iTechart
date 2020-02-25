@@ -33,10 +33,12 @@ namespace ItechartProj.DAL.Repository.Classes
 
             if (existinguser == null)
             {
-               
+
                 contexts.Users.Add(user);
             }
-
+            else
+                throw new Exception();
+            
             await contexts.SaveChangesAsync();
         }
         public async Task<User> CheckUser(User user)
