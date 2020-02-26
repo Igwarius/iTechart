@@ -11,5 +11,6 @@ namespace ItechartProj.DAL.Repository.Interfaces
         Task<IEnumerable<News>> GetNewss();
     
         Task AddNewss(News news);
+        Task<IEnumerable<Category>> GetCatigories();
     }
 }

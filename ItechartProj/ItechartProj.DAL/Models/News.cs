@@ -10,7 +10,7 @@ namespace ItechartProj.DAL.Models
     {
         public News()
         {
-            NewsTags = new List<NewsTags>();
+           ;
             Comments = new List<Comment>();
         }
         [Key]
@@ -25,7 +25,9 @@ namespace ItechartProj.DAL.Models
         public string Image { get; set; }
         [Required]
         public int Viewers { get; set; }
+        [ForeignKey("Category")]
+        public int CategoryID { get; set; }
         public List<Comment> Comments { get;set;}
-    public List<NewsTags> NewsTags { get; set; }
+   
     }
 }

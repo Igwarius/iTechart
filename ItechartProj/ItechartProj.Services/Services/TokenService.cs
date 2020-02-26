@@ -91,7 +91,5 @@ namespace ItechartProj.Services.Services
                 return Convert.ToBase64String(randomNumber);
             }
         }
-
-    
 }
 }

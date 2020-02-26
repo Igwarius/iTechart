@@ -21,6 +21,10 @@ namespace ItechartProj.DAL.Repository.Classes
         {
             return await Task.FromResult(contexts.Newss.Where(x => x == x));
         }
+        public async Task<IEnumerable<Category>> GetCatigories()
+        {
+            return await Task.FromResult(contexts.Categories.Where(x => x == x));
+        }
         public async Task AddNewss(News news)
         {
             var existingnews = await contexts.Newss.FirstOrDefaultAsync(x => x.Id == news.Id);

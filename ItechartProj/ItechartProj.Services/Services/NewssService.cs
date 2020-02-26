@@ -21,6 +21,10 @@ namespace ItechartProj.Services.Services
         {
             return await newssRepository.GetNewss();
         }
+        public async Task<IEnumerable<Category>> GetCategories()
+        {
+            return await newssRepository.GetCatigories();
+        }
         public Task AddNews(News news)
         {
 

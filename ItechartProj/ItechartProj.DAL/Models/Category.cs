@@ -6,13 +6,21 @@ using System.Text;
 
 namespace ItechartProj.DAL.Models
 {
-    public class NewsTags
+    public class Category
     {
+        public Category()
+        {
+            
+            News = new List<News>();
+        }
         [Key]
         public int Id { get; set; }
-        [ForeignKey("News")]
-        public int NewsId { get; set; }
-        [ForeignKey("Tag")]
-        public int TagName { get; set; }
+
+        public List<News> News { get; set; }
+
+        [Required]
+        
+        public string Name { get; set; }
+       
     }
 }

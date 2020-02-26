@@ -19,7 +19,7 @@ namespace ItechartProj.Controllers
             this.newsService = newssSevice;
 
         }
-        [EnableCors]
+       
         [HttpGet]
         [Route("GetAllNews")]
         public async Task<IActionResult> GetAllUsers()
@@ -27,7 +27,14 @@ namespace ItechartProj.Controllers
             var newss = await newsService.GetNews();
             return Ok(newss);
         }
-        [EnableCors]
+        [HttpGet]
+        [Route("GetAllCategories")]
+        public async Task<IActionResult> GetAllCatigories()
+        {
+            var newss = await newsService.GetCategories();
+            return Ok(newss);
+        }
+
         [HttpPost]
         [Route("AddNews")]
         public async Task<IActionResult> AddUser([FromBody]News news)
