@@ -28,6 +28,17 @@ namespace ItechartProj.Controllers
             return Ok(newss);
         }
         [HttpGet]
+        [Route("GetNewsByCategory/{CategoryID}")]
+        public async Task<IActionResult> GetNewsByCategory(int CategoryID)
+        {
+           
+            if (CategoryID != 0) {
+                var newss = await newsService.GetNewsByCategory(CategoryID);
+                return Ok(newss);
+            }
+            return BadRequest();
+        }
+        [HttpGet]
         [Route("GetAllCategories")]
         public async Task<IActionResult> GetAllCatigories()
         {

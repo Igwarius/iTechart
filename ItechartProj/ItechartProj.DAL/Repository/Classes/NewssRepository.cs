@@ -37,5 +37,17 @@ namespace ItechartProj.DAL.Repository.Classes
 
             await contexts.SaveChangesAsync();
         }
+        public async Task<IEnumerable<News>> GetNewsBySubCategory(int CategoryID) {
+
+            return await Task.FromResult(contexts.Newss.Where(x => x.SubCategoryId == CategoryID));
+        }
+        public async Task<IEnumerable<News>> GetNewsByCategory(int CategoryID)
+        {
+           
+
+            
+          
+                return await Task.FromResult(contexts.Newss.Where(x => x.SubCategoryId == (contexts.SubCategories.Where(y => y.CategoryID == CategoryID).Select(a => a.Id)));
+             }
     }
 }

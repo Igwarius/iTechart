@@ -13,7 +13,8 @@ namespace ItechartProj.DAL.Context
         public DbSet<Comment> Comments { get; set; }
       
         public DbSet<Category> Categories { get; set; }
-     
+
+        public DbSet<SubCategory> SubCategories { get; set; }
         public Contexts(DbContextOptions<Contexts> options)
             : base(options)
         {

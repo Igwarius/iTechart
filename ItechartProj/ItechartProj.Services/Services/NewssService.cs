@@ -33,9 +33,14 @@ namespace ItechartProj.Services.Services
                 Id = news.Id,
                 Image = news.Image,
                 Name = news.Name,
-                Text = news.Text
-
-            });
+                Text = news.Text,
+                SubCategoryId = news.SubCategoryId,
+                Viewers = news.Viewers
+            }) ;
+        }
+        public async Task<IEnumerable<News>> GetNewsByCategory(int CategoryID) {
+            return await newssRepository.GetNewsByCategory(CategoryID);
+        
         }
     }
 }

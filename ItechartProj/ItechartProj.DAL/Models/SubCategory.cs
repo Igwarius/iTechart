@@ -6,21 +6,24 @@ using System.Text;
 
 namespace ItechartProj.DAL.Models
 {
-    public class Category
+   public class SubCategory
     {
-        public Category()
+        public SubCategory()
         {
-            SubCategories = new List<SubCategory>();
-           
+
+            News = new List<News>();
         }
         [Key]
         public int Id { get; set; }
 
-        
-        public List<SubCategory> SubCategories { get; set; }
+        public List<News> News { get; set; }
+
         [Required]
-        
+
         public string Name { get; set; }
-       
+
+        [ForeignKey("Category")]
+        public int CategoryID { get; set; }
+
     }
 }
