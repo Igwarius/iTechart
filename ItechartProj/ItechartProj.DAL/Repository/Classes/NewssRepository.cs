@@ -25,6 +25,10 @@ namespace ItechartProj.DAL.Repository.Classes
         {
             return await Task.FromResult(contexts.Categories.Where(x => x == x));
         }
+        public async Task<IEnumerable<SubCategory>> GetSubCatigories()
+        {
+            return await Task.FromResult(contexts.SubCategories.Where(x => x == x));
+        }
         public async Task AddNewss(News news)
         {
             var existingnews = await contexts.Newss.FirstOrDefaultAsync(x => x.Id == news.Id);
@@ -37,17 +41,29 @@ namespace ItechartProj.DAL.Repository.Classes
 
             await contexts.SaveChangesAsync();
         }
-        public async Task<IEnumerable<News>> GetNewsBySubCategory(int CategoryID) {
+        public async Task<IEnumerable<News>> GetNewsBySubCategory(int SubCategoryID) {
 
-            return await Task.FromResult(contexts.Newss.Where(x => x.SubCategoryId == CategoryID));
+            return await Task.FromResult(contexts.Newss.Where(x => x.SubCategoryId == SubCategoryID));
         }
         public async Task<IEnumerable<News>> GetNewsByCategory(int CategoryID)
         {
-           
+            List<News> news = new List<News>();
 
-            
+            var subCategories = contexts.SubCategories.Where(a => a.CategoryID == CategoryID).Select(a => a.Id);
+            foreach (var category in subCategories)
+            {
+                var oneSubCategoryNews= contexts.Newss.Where(b => b.SubCategoryId == category).AsEnumerable();
+              
+               news = news.Concat(oneSubCategoryNews).ToList();
+            }
+            return await Task.FromResult( news);
           
-                return await Task.FromResult(contexts.Newss.Where(x => x.SubCategoryId == (contexts.SubCategories.Where(y => y.CategoryID == CategoryID).Select(a => a.Id)));
-             }
+        }
+
+        public async Task<IEnumerable<SubCategory>> GetSubCatigoriesByCategory(int CategoryID)
+        {
+            return await Task.FromResult(contexts.SubCategories.Where(x => x.CategoryID == CategoryID));
+        }
     }
-}
+    }
+

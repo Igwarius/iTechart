@@ -12,7 +12,9 @@ namespace ItechartProj.DAL.Repository.Interfaces
     
         Task AddNewss(News news);
         Task<IEnumerable<Category>> GetCatigories();
+        Task<IEnumerable<SubCategory>> GetSubCatigories();
+        Task<IEnumerable<SubCategory>> GetSubCatigoriesByCategory(int CategoryID);
         Task<IEnumerable<News>> GetNewsByCategory(int CategoryID);
-        
+        Task<IEnumerable<News>> GetNewsBySubCategory(int SubCategoryID);
     }
 }

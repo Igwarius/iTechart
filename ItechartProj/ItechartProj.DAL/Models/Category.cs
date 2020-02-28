@@ -21,6 +21,6 @@ namespace ItechartProj.DAL.Models
         [Required]
         
         public string Name { get; set; }
-       
+      
     }
 }

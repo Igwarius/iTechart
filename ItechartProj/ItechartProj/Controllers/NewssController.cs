@@ -39,12 +39,45 @@ namespace ItechartProj.Controllers
             return BadRequest();
         }
         [HttpGet]
+        [Route("GetNewsBySubCategory/{SubCategoryID}")]
+        public async Task<IActionResult> GetNewsBySubCategory(int SubCategoryID)
+        {
+
+            if (SubCategoryID != 0)
+            {
+                var newss = await newsService.GetNewsBySubCategory(SubCategoryID);
+                return Ok(newss);
+            }
+            return BadRequest();
+        }
+        [HttpGet]
+        [Route("GetSubCategoryByCategory/{CategoryID}")]
+        public async Task<IActionResult> GetSubCategoryByCategory(int CategoryID)
+        {
+
+            if (CategoryID != 0)
+            {
+                var subCategories = await newsService.GetSubCategoryByCategory(CategoryID);
+                return Ok(subCategories);
+            }
+            return BadRequest();
+        }
+
+        [HttpGet]
         [Route("GetAllCategories")]
         public async Task<IActionResult> GetAllCatigories()
         {
             var newss = await newsService.GetCategories();
             return Ok(newss);
         }
+        [HttpGet]
+        [Route("GetAllSubCategories")]
+        public async Task<IActionResult> GetSubAllCatigories()
+        {
+            var newss = await newsService.GetSubCategories();
+            return Ok(newss);
+        }
+
 
         [HttpPost]
         [Route("AddNews")]

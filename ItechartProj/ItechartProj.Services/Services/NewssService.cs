@@ -25,6 +25,10 @@ namespace ItechartProj.Services.Services
         {
             return await newssRepository.GetCatigories();
         }
+        public async Task<IEnumerable<SubCategory>> GetSubCategories()
+        {
+            return await newssRepository.GetSubCatigories();
+        }
         public Task AddNews(News news)
         {
 
@@ -41,6 +45,17 @@ namespace ItechartProj.Services.Services
         public async Task<IEnumerable<News>> GetNewsByCategory(int CategoryID) {
             return await newssRepository.GetNewsByCategory(CategoryID);
         
+        }
+     
+
+        public async Task<IEnumerable<News>> GetNewsBySubCategory(int SubCategoryID)
+        {
+            return await newssRepository.GetNewsBySubCategory(SubCategoryID);
+        }
+
+        public async Task<IEnumerable<SubCategory>> GetSubCategoryByCategory(int CategoryID)
+        {
+            return await newssRepository.GetSubCatigoriesByCategory(CategoryID);
         }
     }
 }

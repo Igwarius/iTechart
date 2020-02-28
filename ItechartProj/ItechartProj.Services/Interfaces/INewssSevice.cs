@@ -11,6 +11,9 @@ namespace ItechartProj.Services.Interfaces
         Task<IEnumerable<News>> GetNews();
         Task AddNews(News news);
         Task<IEnumerable<Category>> GetCategories();
+        Task<IEnumerable<SubCategory>> GetSubCategories();
         Task<IEnumerable<News>> GetNewsByCategory(int CategoryID);
+        Task<IEnumerable<News>> GetNewsBySubCategory(int SubCategoryID);
+        Task<IEnumerable<SubCategory>> GetSubCategoryByCategory(int CategoryID);
     }
 }
