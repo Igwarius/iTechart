@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ItechartProj.DAL.Migrations
 {
-    [DbContext(typeof(Contexts))]
+    [DbContext(typeof(Context.Context))]
     [Migration("20200217123124_AddJWT")]
     partial class AddJWT
     {

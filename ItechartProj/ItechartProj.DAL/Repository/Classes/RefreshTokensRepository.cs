@@ -10,9 +10,9 @@ namespace ItechartProj.DAL.Repository.Classes
 {
     public class RefreshTokensRepository : IRefreshTokensRepository
     {
-        private readonly Contexts commonContext;
+        private readonly Context.Context commonContext;
 
-        public RefreshTokensRepository(Contexts commonContext)
+        public RefreshTokensRepository(Context.Context commonContext)
         {
             this.commonContext = commonContext;
         }

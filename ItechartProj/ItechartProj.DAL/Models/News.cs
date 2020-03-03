@@ -25,7 +25,9 @@ namespace ItechartProj.DAL.Models
         public string Image { get; set; }
         [Required]
         public int Viewers { get; set; }
-        
+        [Required]
+        public DateTime uploadDate { get; set; }
+
         [ForeignKey("SubCategory")]
         public int SubCategoryId { get; set; }
         public List<Comment> Comments { get;set;}

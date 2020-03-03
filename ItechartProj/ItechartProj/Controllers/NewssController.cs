@@ -51,6 +51,18 @@ namespace ItechartProj.Controllers
             return BadRequest();
         }
         [HttpGet]
+        [Route("GetSortNews/{Sortparam}")]
+        public async Task<IActionResult> GetSortNews(string Sortparam)
+        {
+
+            if ((Sortparam=="date")||(Sortparam=="view"))
+            {
+                var news = await newsService.GetSortNews(Sortparam);
+                return Ok(news);
+            }
+            return BadRequest();
+        }
+        [HttpGet]
         [Route("GetSubCategoryByCategory/{CategoryID}")]
         public async Task<IActionResult> GetSubCategoryByCategory(int CategoryID)
         {

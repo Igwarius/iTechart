@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Text;
 namespace ItechartProj.DAL.Context
 {
-   public class Contexts:DbContext
+   public class Context:DbContext
     {
         public DbSet<RefreshTokens> RefreshTokens { get; set; }
         public DbSet<User> Users { get; set; }
@@ -15,7 +15,7 @@ namespace ItechartProj.DAL.Context
         public DbSet<Category> Categories { get; set; }
 
         public DbSet<SubCategory> SubCategories { get; set; }
-        public Contexts(DbContextOptions<Contexts> options)
+        public Context(DbContextOptions<Context> options)
             : base(options)
         {
             Database.EnsureCreated();   

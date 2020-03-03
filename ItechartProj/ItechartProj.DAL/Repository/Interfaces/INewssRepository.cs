@@ -16,5 +16,6 @@ namespace ItechartProj.DAL.Repository.Interfaces
         Task<IEnumerable<SubCategory>> GetSubCatigoriesByCategory(int CategoryID);
         Task<IEnumerable<News>> GetNewsByCategory(int CategoryID);
         Task<IEnumerable<News>> GetNewsBySubCategory(int SubCategoryID);
+        Task<IEnumerable<News>> GetSortNewss(string sortparam);
     }
 }

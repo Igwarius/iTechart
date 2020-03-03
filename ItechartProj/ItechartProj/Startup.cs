@@ -65,7 +65,7 @@ namespace ItechartProj
 
             services.AddCors();
          
-            services.AddDbContext<Contexts>(options =>
+            services.AddDbContext<Context>(options =>
            options.UseSqlServer(Configuration.GetConnectionString("Context")));
             
             }

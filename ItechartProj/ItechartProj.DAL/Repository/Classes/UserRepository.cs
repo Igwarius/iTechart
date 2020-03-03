@@ -12,14 +12,14 @@ namespace ItechartProj.DAL.Repository.Classes
 {
   public  class UserRepository : IUserRepository
     {
-        private readonly Contexts contexts;
-        public UserRepository(Contexts contexts)
+        private readonly Context.Context contexts;
+        public UserRepository(Context.Context contexts)
         {
             this.contexts = contexts;
         }
         public async Task<IEnumerable<User>> GetUsers()
         {
-            return await Task.FromResult(contexts.Users.Where(x => x==x));
+            return await Task.FromResult(contexts.Users);
         }
         public async Task<User> GetCurrentUser(string Login)
         {

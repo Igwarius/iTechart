@@ -12,22 +12,31 @@ namespace ItechartProj.DAL.Repository.Classes
 {
    public class NewssRepository :INewssRepository
     {
-        private readonly Contexts contexts;
-        public NewssRepository(Contexts contexts)
+        private readonly Context.Context contexts;
+        public NewssRepository(Context.Context contexts)
         {
             this.contexts = contexts;
         }
         public async Task<IEnumerable<News>> GetNewss()
         {
-            return await Task.FromResult(contexts.Newss.Where(x => x == x));
+            return await Task.FromResult(contexts.Newss);
+        }
+        public async Task<IEnumerable<News>> GetSortNewss(string sortparam)
+        {
+            if (sortparam == "date")
+                return await Task.FromResult(contexts.Newss.OrderBy(x=>x.uploadDate));
+            if (sortparam == "view")
+                return await Task.FromResult(contexts.Newss.OrderByDescending(x => x.Viewers));
+            else
+                return null;
         }
         public async Task<IEnumerable<Category>> GetCatigories()
         {
-            return await Task.FromResult(contexts.Categories.Where(x => x == x));
+            return await Task.FromResult(contexts.Categories);
         }
         public async Task<IEnumerable<SubCategory>> GetSubCatigories()
         {
-            return await Task.FromResult(contexts.SubCategories.Where(x => x == x));
+            return await Task.FromResult(contexts.SubCategories);
         }
         public async Task AddNewss(News news)
         {
