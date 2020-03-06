@@ -8,10 +8,10 @@ namespace ItechartProj.DAL.Repository.Interfaces
 {
     public  interface IRefreshTokensRepository
     {
-        Task<RefreshTokens> GetRefreshToken(string Username);
+        Task<RefreshTokens> GetRefreshToken(string username);
 
-        Task DeleteRefreshToken(string Username);
+        Task DeleteRefreshToken(string username);
 
-        Task SaveRefreshToken(string Username, string newRefreshToken);
+        Task SaveRefreshToken(string username, string newRefreshToken);
     }
 }

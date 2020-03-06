@@ -5,38 +5,40 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using static ItechartProj.DAL.Repository.Classes.NewsRepository;
 
 namespace ItechartProj.Services.Services
 {
-    public class NewssService : INewssSevice
+    public class NewssService : INewsSevice
     {
-        private readonly INewssRepository newssRepository;
+        private readonly INewsRepository newsRepository;
 
-        public NewssService(INewssRepository newssRepository)
+        public NewssService(INewsRepository newssRepository)
         {
-            this.newssRepository = newssRepository;
+            this.newsRepository = newssRepository;
 
         }
+
         public async Task<IEnumerable<News>> GetNews()
         {
-            return await newssRepository.GetNewss();
+            return await newsRepository.GetNewss();
         }
-        public async Task<IEnumerable<News>> GetSortNews(string sortparam)
+        public async Task<IEnumerable<News>> GetSortNews(SortParam sortparam)
         {
-            return await newssRepository.GetSortNewss(sortparam);
+            return await newsRepository.GetSortNewss(sortparam);
         }
         public async Task<IEnumerable<Category>> GetCategories()
         {
-            return await newssRepository.GetCatigories();
+            return await newsRepository.GetCatigories();
         }
         public async Task<IEnumerable<SubCategory>> GetSubCategories()
         {
-            return await newssRepository.GetSubCatigories();
+            return await newsRepository.GetSubCatigories();
         }
         public Task AddNews(News news)
         {
 
-            return newssRepository.AddNewss(new News
+            return newsRepository.AddNewss(new News
             {
                 Id = news.Id,
                 Image = news.Image,
@@ -47,20 +49,25 @@ namespace ItechartProj.Services.Services
                 uploadDate = DateTime.Now
             }); 
         }
-        public async Task<IEnumerable<News>> GetNewsByCategory(int CategoryID) {
-            return await newssRepository.GetNewsByCategory(CategoryID);
+        public async Task<IEnumerable<News>> GetNewsByCategory(int categoryID) {
+            return await newsRepository.GetNewsByCategory(categoryID);
         
         }
      
 
-        public async Task<IEnumerable<News>> GetNewsBySubCategory(int SubCategoryID)
+        public async Task<IEnumerable<News>> GetNewsBySubCategory(int subCategoryID)
         {
-            return await newssRepository.GetNewsBySubCategory(SubCategoryID);
+            return await newsRepository.GetNewsBySubCategory(subCategoryID);
         }
 
-        public async Task<IEnumerable<SubCategory>> GetSubCategoryByCategory(int CategoryID)
+        public async Task<IEnumerable<SubCategory>> GetSubCategoryByCategory(int categoryID)
         {
-            return await newssRepository.GetSubCatigoriesByCategory(CategoryID);
+            return await newsRepository.GetSubCatigoriesByCategory(categoryID);
+        }
+
+        public async Task<IEnumerable<News>> GetNewssById(int id)
+        {
+            return await newsRepository.GetNewssById(id);
         }
     }
 }

@@ -10,7 +10,7 @@ namespace ItechartProj.Services.Interfaces
     {
         Task<IEnumerable<User>> GetUsers();
         Task AddUser(User user);
-        Task<User> GetCurrentUser(string Login);
+        Task<User> GetCurrentUser(string login);
         Task<object> CheckUser(User user);
     }
 }

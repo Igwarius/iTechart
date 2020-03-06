@@ -14,9 +14,9 @@ namespace WebServer.Services.Services
             this.refreshTokensRepository = refreshTokensRepository;
         }
 
-        public async Task<RefreshTokens> GetRefreshToken(string Login)
+        public async Task<RefreshTokens> GetRefreshToken(string login)
         {
-            var res = await refreshTokensRepository.GetRefreshToken(Login);
+            var res = await refreshTokensRepository.GetRefreshToken(login);
             if (res == null) return null;
 
             RefreshTokens refreshTokens = new RefreshTokens
@@ -28,14 +28,14 @@ namespace WebServer.Services.Services
             return refreshTokens;
         }
 
-        public async Task DeleteRefreshToken(string Login)
+        public async Task DeleteRefreshToken(string login)
         {
-            await refreshTokensRepository.DeleteRefreshToken(Login);
+            await refreshTokensRepository.DeleteRefreshToken(login);
         }
 
-        public async Task SaveRefreshToken(string Login, string newRefreshToken)
+        public async Task SaveRefreshToken(string login, string newRefreshToken)
         {
-            await refreshTokensRepository.SaveRefreshToken(Login, newRefreshToken);
+            await refreshTokensRepository.SaveRefreshToken(login, newRefreshToken);
         }
     }
 }

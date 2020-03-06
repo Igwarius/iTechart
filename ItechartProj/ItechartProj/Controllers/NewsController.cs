@@ -1,30 +1,39 @@
 ﻿using ItechartProj.DAL.Models;
 using ItechartProj.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using static ItechartProj.DAL.Repository.Classes.NewsRepository;
 
 namespace ItechartProj.Controllers
 {
     [Route("api/News")]
     [ApiController]
-    public class NewssController : Controller
+    public class NewsController : Controller
     {
-        private readonly INewssSevice newsService;
-        public NewssController(INewssSevice newssSevice)
+        private readonly INewsSevice newsService;
+        public NewsController(INewsSevice newssSevice)
         {
             this.newsService = newssSevice;
 
         }
-       
+   //   [Authorize(Policy = "MyPolicy")]
         [HttpGet]
         [Route("GetAllNews")]
-        public async Task<IActionResult> GetAllUsers()
+        public async Task<IActionResult> GetAllNews()
         {
             var newss = await newsService.GetNews();
+            return Ok(newss);
+        }
+        [HttpGet]
+        [Route("GetNewsById/{Id}")]
+        public async Task<IActionResult> GetNewsById(int id)
+        {
+            var newss = await newsService.GetNewssById(id);
             return Ok(newss);
         }
         [HttpGet]
@@ -51,13 +60,13 @@ namespace ItechartProj.Controllers
             return BadRequest();
         }
         [HttpGet]
-        [Route("GetSortNews/{Sortparam}")]
-        public async Task<IActionResult> GetSortNews(string Sortparam)
+        [Route("GetSortNews/{sortparam}")]
+        public async Task<IActionResult> GetSortNews(SortParam sortparam)
         {
 
-            if ((Sortparam=="date")||(Sortparam=="view"))
+            if ((sortparam== SortParam.date) ||(sortparam == SortParam.view))
             {
-                var news = await newsService.GetSortNews(Sortparam);
+                var news = await newsService.GetSortNews(sortparam);
                 return Ok(news);
             }
             return BadRequest();

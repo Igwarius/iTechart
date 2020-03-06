@@ -17,24 +17,24 @@ namespace ItechartProj.DAL.Repository.Classes
             this.commonContext = commonContext;
         }
 
-        public async Task<RefreshTokens> GetRefreshToken(string Username)
+        public async Task<RefreshTokens> GetRefreshToken(string username)
         {
-            var RefreshToken = await commonContext.RefreshTokens.FindAsync(Username);
+            var RefreshToken = await commonContext.RefreshTokens.FindAsync(username);
             if (RefreshToken != null) return RefreshToken;
             return null;
         }
 
-        public async Task DeleteRefreshToken(string Username)
+        public async Task DeleteRefreshToken(string username)
         {
-            var RefreshToken = await commonContext.RefreshTokens.FindAsync(Username);
+            var RefreshToken = await commonContext.RefreshTokens.FindAsync(username);
             if (RefreshToken != null) commonContext.Remove(RefreshToken);
             await commonContext.SaveChangesAsync();
         }
 
-        public async Task SaveRefreshToken(string Login, string newRefreshToken)
+        public async Task SaveRefreshToken(string login, string newRefreshToken)
         {
-            RefreshTokens refreshToken = new RefreshTokens { Login = Login, RefreshToken = newRefreshToken };
-            var ExistingTokens = await commonContext.RefreshTokens.FindAsync(Login);
+            RefreshTokens refreshToken = new RefreshTokens { Login = login, RefreshToken = newRefreshToken };
+            var ExistingTokens = await commonContext.RefreshTokens.FindAsync(login);
             if (ExistingTokens != null) commonContext.RefreshTokens.Remove(ExistingTokens);
 
             commonContext.RefreshTokens.Add(refreshToken);

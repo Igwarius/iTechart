@@ -12,38 +12,38 @@ namespace ItechartProj.DAL.Repository.Classes
 {
   public  class UserRepository : IUserRepository
     {
-        private readonly Context.Context contexts;
-        public UserRepository(Context.Context contexts)
+        private readonly Context.Context context;
+        public UserRepository(Context.Context context)
         {
-            this.contexts = contexts;
+            this.context = context;
         }
         public async Task<IEnumerable<User>> GetUsers()
         {
-            return await Task.FromResult(contexts.Users);
+            return await Task.FromResult(context.Users);
         }
-        public async Task<User> GetCurrentUser(string Login)
+        public async Task<User> GetCurrentUser(string login)
         {
-            var user = await contexts.Users.FindAsync(Login);
+            var user = await context.Users.FindAsync(login);
             if (user != null) return user;
             return null;
         }
         public async Task AddUser(User user)
         {
-            var existinguser = await contexts.Users.FirstOrDefaultAsync(x => x.Login == user.Login);
+            var existinguser = await context.Users.FirstOrDefaultAsync(x => x.Login == user.Login);
 
             if (existinguser == null)
             {
 
-                contexts.Users.Add(user);
+                context.Users.Add(user);
             }
             else
                 throw new Exception();
             
-            await contexts.SaveChangesAsync();
+            await context.SaveChangesAsync();
         }
         public async Task<User> CheckUser(User user)
         {
-            var founduser = await contexts.Users.FirstOrDefaultAsync(x => x.Login == user.Login && x.password == user.password);
+            var founduser = await context.Users.FirstOrDefaultAsync(x => x.Login == user.Login && x.Password == user.Password);
             if (founduser != null) return founduser;
             return null;
         }

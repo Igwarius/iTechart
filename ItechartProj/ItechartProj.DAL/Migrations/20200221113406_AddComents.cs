@@ -8,7 +8,7 @@ namespace ItechartProj.DAL.Migrations
         {
             migrationBuilder.AlterColumn<string>(
                 name: "Text",
-                table: "Newss",
+                table: "News",
                 type: "varchar(1000)",
                 nullable: false,
                 oldClrType: typeof(string),
@@ -16,7 +16,7 @@ namespace ItechartProj.DAL.Migrations
 
             migrationBuilder.AddColumn<int>(
                 name: "Viewers",
-                table: "Newss",
+                table: "News",
                 nullable: false,
                 defaultValue: 0);
 
@@ -33,7 +33,7 @@ namespace ItechartProj.DAL.Migrations
                     table.ForeignKey(
                         name: "FK_Tag_Newss_NewsId",
                         column: x => x.NewsId,
-                        principalTable: "Newss",
+                        principalTable: "News",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -51,11 +51,11 @@ namespace ItechartProj.DAL.Migrations
 
             migrationBuilder.DropColumn(
                 name: "Viewers",
-                table: "Newss");
+                table: "News");
 
             migrationBuilder.AlterColumn<string>(
                 name: "Text",
-                table: "Newss",
+                table: "News",
                 type: "varchar(200)",
                 nullable: false,
                 oldClrType: typeof(string),

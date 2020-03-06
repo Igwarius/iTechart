@@ -7,7 +7,7 @@ namespace ItechartProj.DAL.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Newss",
+                name: "News",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -25,7 +25,7 @@ namespace ItechartProj.DAL.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Newss");
+                name: "News");
         }
     }
 }

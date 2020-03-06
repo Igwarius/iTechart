@@ -39,7 +39,7 @@ namespace ItechartProj.DAL.Migrations
                         .HasColumnType("nvarchar(15)")
                         .HasMaxLength(15);
 
-                    b.Property<string>("password")
+                    b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("varchar(200)");
 

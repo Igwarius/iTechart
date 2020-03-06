@@ -33,19 +33,19 @@ namespace ItechartProj.Services.Services
         }
         public Task AddUser(User user)
         {
-
-            return userRepository.AddUser(new User
+           return userRepository.AddUser(new User
             {
                Login = user.Login,
-                password = HashFunc.GetHashFromPassword (
-                user.password),
+                Password = HashFunc.GetHashFromPassword (
+                user.Password),
+                Role = "user"
 
             });
         }
 
         public async Task<object> CheckUser(User user)
         {
-            var founduser = await userRepository.CheckUser(new User { Login = user.Login, password = HashFunc.GetHashFromPassword(user.password) });
+            var founduser = await userRepository.CheckUser(new User { Login = user.Login, Password = HashFunc.GetHashFromPassword(user.Password),Role=user.Role });
             if (founduser == null) return null;
 
           
@@ -53,8 +53,8 @@ namespace ItechartProj.Services.Services
             User FoundUser = new User
             {
                 Login= founduser.Login,
-                password = founduser.password,
-             
+                Password = founduser.Password,
+             Role=founduser.Role
             };
 
             var identity = ClaimsService.GetIdentity(FoundUser);

@@ -20,13 +20,13 @@ namespace ItechartProj.DAL.Migrations
 
             migrationBuilder.AddColumn<int>(
                 name: "CategoryID",
-                table: "Newss",
+                table: "News",
                 nullable: false,
                 defaultValue: 0);
 
             migrationBuilder.AddColumn<int>(
                 name: "SubCategoryId",
-                table: "Newss",
+                table: "News",
                 nullable: false,
                 defaultValue: 0);
 
@@ -60,7 +60,7 @@ namespace ItechartProj.DAL.Migrations
                     table.ForeignKey(
                         name: "FK_Comments_Newss_NewsId",
                         column: x => x.NewsId,
-                        principalTable: "Newss",
+                        principalTable: "News",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -87,12 +87,12 @@ namespace ItechartProj.DAL.Migrations
 
             migrationBuilder.CreateIndex(
                 name: "IX_Newss_CategoryID",
-                table: "Newss",
+                table: "News",
                 column: "CategoryID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Newss_SubCategoryId",
-                table: "Newss",
+                table: "News",
                 column: "SubCategoryId");
 
             migrationBuilder.CreateIndex(
@@ -107,7 +107,7 @@ namespace ItechartProj.DAL.Migrations
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Newss_Categories_CategoryID",
-                table: "Newss",
+                table: "News",
                 column: "CategoryID",
                 principalTable: "Categories",
                 principalColumn: "Id",
@@ -115,7 +115,7 @@ namespace ItechartProj.DAL.Migrations
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Newss_SubCategories_SubCategoryId",
-                table: "Newss",
+                table: "News",
                 column: "SubCategoryId",
                 principalTable: "SubCategories",
                 principalColumn: "Id",
@@ -126,11 +126,11 @@ namespace ItechartProj.DAL.Migrations
         {
             migrationBuilder.DropForeignKey(
                 name: "FK_Newss_Categories_CategoryID",
-                table: "Newss");
+                table: "News");
 
             migrationBuilder.DropForeignKey(
                 name: "FK_Newss_SubCategories_SubCategoryId",
-                table: "Newss");
+                table: "News");
 
             migrationBuilder.DropTable(
                 name: "Comments");
@@ -143,19 +143,19 @@ namespace ItechartProj.DAL.Migrations
 
             migrationBuilder.DropIndex(
                 name: "IX_Newss_CategoryID",
-                table: "Newss");
+                table: "News");
 
             migrationBuilder.DropIndex(
                 name: "IX_Newss_SubCategoryId",
-                table: "Newss");
+                table: "News");
 
             migrationBuilder.DropColumn(
                 name: "CategoryID",
-                table: "Newss");
+                table: "News");
 
             migrationBuilder.DropColumn(
                 name: "SubCategoryId",
-                table: "Newss");
+                table: "News");
 
             migrationBuilder.AlterColumn<string>(
                 name: "RefreshToken",
@@ -179,7 +179,7 @@ namespace ItechartProj.DAL.Migrations
                     table.ForeignKey(
                         name: "FK_Tag_Newss_NewsId",
                         column: x => x.NewsId,
-                        principalTable: "Newss",
+                        principalTable: "News",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
