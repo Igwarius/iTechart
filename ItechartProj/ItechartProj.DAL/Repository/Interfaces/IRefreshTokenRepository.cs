@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace ItechartProj.DAL.Repository.Interfaces
 {
-    public  interface IRefreshTokensRepository
+    public  interface IRefreshTokenRepository
     {
-        Task<RefreshTokens> GetRefreshToken(string username);
+        Task<RefreshToken> GetRefreshToken(string username);
 
         Task DeleteRefreshToken(string username);
 

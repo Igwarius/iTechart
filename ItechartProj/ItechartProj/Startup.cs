@@ -32,10 +32,10 @@ namespace ItechartProj
         {
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IUserRepository, UserRepository>();
-            services.AddTransient<INewsSevice, NewssService>();
+            services.AddTransient<INewsService, NewsService>();
             services.AddTransient<INewsRepository, NewsRepository>();
-            services.AddTransient<IRefreshTokensRepository, RefreshTokensRepository>();
-            services.AddTransient<IRefreshTokensService, RefreshTokenService>();
+            services.AddTransient<IRefreshTokenRepository, RefreshTokenRepository>();
+            services.AddTransient<IRefreshTokenService, RefreshTokenService>();
          
             services.AddControllers();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

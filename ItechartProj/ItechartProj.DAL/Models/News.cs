@@ -26,7 +26,7 @@ namespace ItechartProj.DAL.Models
         [Required]
         public int Viewers { get; set; }
         [Required]
-        public DateTime uploadDate { get; set; }
+        public DateTime UploadDate { get; set; }
 
         [ForeignKey("SubCategory")]
         public int SubCategoryId { get; set; }

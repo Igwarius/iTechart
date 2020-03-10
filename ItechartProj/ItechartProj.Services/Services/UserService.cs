@@ -12,28 +12,28 @@ namespace ItechartProj.Services.Services
 {
     public class UserService : IUserService
     {
-        private readonly IRefreshTokensRepository refreshTokensRepository;
-        private readonly IUserRepository userRepository;
+        private readonly IRefreshTokenRepository _refreshTokensRepository;
+        private readonly IUserRepository _userRepository;
 
-        public UserService(IUserRepository userRepository, IRefreshTokensRepository refreshTokensRepository)
+        public UserService(IUserRepository userRepository, IRefreshTokenRepository refreshTokensRepository)
         {
-            this.userRepository = userRepository;
-            this.refreshTokensRepository = refreshTokensRepository;
+            this._userRepository = userRepository;
+            this._refreshTokensRepository = refreshTokensRepository;
         }
         public async Task<IEnumerable<User>> GetUsers()
         {
-            return await userRepository.GetUsers();
+            return await _userRepository.GetUsers();
         }
         public async Task<User> GetCurrentUser(string Username)
         {
-            var founduser = await userRepository.GetCurrentUser(Username);
+            var founduser = await _userRepository.GetCurrentUser(Username);
             if (founduser == null) return null;
 
             return founduser;
         }
         public Task AddUser(User user)
         {
-           return userRepository.AddUser(new User
+           return _userRepository.AddUser(new User
             {
                Login = user.Login,
                 Password = HashFunc.GetHashFromPassword (
@@ -45,26 +45,26 @@ namespace ItechartProj.Services.Services
 
         public async Task<object> CheckUser(User user)
         {
-            var founduser = await userRepository.CheckUser(new User { Login = user.Login, Password = HashFunc.GetHashFromPassword(user.Password),Role=user.Role });
+            var founduser = await _userRepository.CheckUser(new User { Login = user.Login, Password = HashFunc.GetHashFromPassword(user.Password),Role=user.Role });
             if (founduser == null) return null;
 
           
 
-            User FoundUser = new User
+            var foundUser = new User
             {
                 Login= founduser.Login,
                 Password = founduser.Password,
              Role=founduser.Role
             };
 
-            var identity = ClaimsService.GetIdentity(FoundUser);
+            var identity = ClaimsService.GetIdentity(foundUser);
             if (identity == null) return null;
 
             var jwttoken = TokenService.CreateToken(identity);
             if (jwttoken != null)
             {
                 var newRefreshToken = TokenService.GenerateRefreshToken();
-                 await refreshTokensRepository.SaveRefreshToken(founduser.Login, newRefreshToken);
+                 await _refreshTokensRepository.SaveRefreshToken(founduser.Login, newRefreshToken);
 
                 var tokens = new
                 {

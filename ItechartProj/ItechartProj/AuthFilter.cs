@@ -13,15 +13,15 @@ namespace ItechartProj
 
     public class AuthFilter : AuthorizationHandler<AccountRequirement>
     {
-        private readonly IRefreshTokensService refreshTokensService;
+        private readonly IRefreshTokenService _refreshTokenService;
         private readonly IHttpContextAccessor httpContextAccessor;
-        protected string role;
+        protected string Role;
 
         public AuthFilter() { }
 
-        public AuthFilter(IRefreshTokensService refreshTokensService, IHttpContextAccessor httpContextAccessor)
+        public AuthFilter(IRefreshTokenService refreshTokenService, IHttpContextAccessor httpContextAccessor)
         {
-            this.refreshTokensService = refreshTokensService;
+            this._refreshTokenService = refreshTokenService;
             this.httpContextAccessor = httpContextAccessor;
         }
 
@@ -29,12 +29,10 @@ namespace ItechartProj
         {
             try
             {
-                string jwtToken, refreshtoken;
-
                 HttpContext httpContext = httpContextAccessor.HttpContext;
-                jwtToken = httpContext.Request.Headers["access_token"];
+                string jwtToken = httpContext.Request.Headers["access_token"];
                  
-                refreshtoken = httpContext.Request.Headers["RefreshToken"];
+                string refreshtoken = httpContext.Request.Headers["Token"];
 
                 if (jwtToken == "null" || refreshtoken == "null")
                 {
@@ -53,7 +51,7 @@ namespace ItechartProj
                     var role = principal.FindFirst("http://schemas.microsoft.com/ws/2008/06/identity/claims/role").Value;
                    
 
-                    var savedRefreshToken = await refreshTokensService.GetRefreshToken(login);
+                    var savedRefreshToken = await _refreshTokenService.GetRefreshToken(login);
                 
 
                     var identity = ClaimsService.GetIdentity(new User
@@ -65,15 +63,15 @@ namespace ItechartProj
 
                     var token = TokenService.CreateToken(identity);
                     var newRefreshToken = TokenService.GenerateRefreshToken();
-                    await refreshTokensService.DeleteRefreshToken(login);
-                    await refreshTokensService.SaveRefreshToken(login, newRefreshToken);
+                    await _refreshTokenService.DeleteRefreshToken(login);
+                    await _refreshTokenService.SaveRefreshToken(login, newRefreshToken);
 
                     var propertyInfo = token.GetType().GetProperty("access_token");
                     string temp = (string)propertyInfo.GetValue(token, null);
 
                     httpContext.Response.Headers["AccessToken"] = temp;
                     httpContext.Request.Headers["Authorization"] = "Bearer " + temp;
-                    httpContext.Response.Headers["RefreshToken"] = newRefreshToken;
+                    httpContext.Response.Headers["Token"] = newRefreshToken;
                 }
             }
             catch (Exception e)

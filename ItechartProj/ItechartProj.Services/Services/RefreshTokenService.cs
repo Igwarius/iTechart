@@ -5,37 +5,37 @@ using System.Threading.Tasks;
 
 namespace WebServer.Services.Services
 {
-    public class RefreshTokenService : IRefreshTokensService
+    public class RefreshTokenService : IRefreshTokenService
     {
-        private readonly IRefreshTokensRepository refreshTokensRepository;
+        private readonly IRefreshTokenRepository _refreshTokenRepository;
 
-        public RefreshTokenService(IRefreshTokensRepository refreshTokensRepository)
+        public RefreshTokenService(IRefreshTokenRepository refreshTokenRepository)
         {
-            this.refreshTokensRepository = refreshTokensRepository;
+            this._refreshTokenRepository = refreshTokenRepository;
         }
 
-        public async Task<RefreshTokens> GetRefreshToken(string login)
+        public async Task<RefreshToken> GetRefreshToken(string login)
         {
-            var res = await refreshTokensRepository.GetRefreshToken(login);
+            var res = await _refreshTokenRepository.GetRefreshToken(login);
             if (res == null) return null;
 
-            RefreshTokens refreshTokens = new RefreshTokens
+            var refreshToken = new RefreshToken
             {
                 Login = res.Login,
-                RefreshToken = res.RefreshToken
+                Token = res.Token
             };
 
-            return refreshTokens;
+            return refreshToken;
         }
 
         public async Task DeleteRefreshToken(string login)
         {
-            await refreshTokensRepository.DeleteRefreshToken(login);
+            await _refreshTokenRepository.DeleteRefreshToken(login);
         }
 
         public async Task SaveRefreshToken(string login, string newRefreshToken)
         {
-            await refreshTokensRepository.SaveRefreshToken(login, newRefreshToken);
+            await _refreshTokenRepository.SaveRefreshToken(login, newRefreshToken);
         }
     }
 }

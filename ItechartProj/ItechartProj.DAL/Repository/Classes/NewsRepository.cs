@@ -17,60 +17,63 @@ namespace ItechartProj.DAL.Repository.Classes
         {
             this.context = contexts;
         }
-        public async Task<IEnumerable<News>> GetNewss()
+        public async Task<IEnumerable<News>> GetNews()
         {
-            return await Task.FromResult(context.Newss);
+            return await Task.FromResult(context.News);
         }
-        public async Task<IEnumerable<News>> GetNewssById(int id)
+        public async Task<IEnumerable<News>> GetNewsById(int id)
         {
-            return await Task.FromResult(context.Newss.Where(x=>x.Id==id));
+            return await Task.FromResult(context.News.Where(x=>x.Id==id));
         }
         public enum SortParam 
         {
-            date,
-            view
+            Date,
+            View
         }
-        public async Task<IEnumerable<News>> GetSortNewss(SortParam sortparam)
+        public async Task<IEnumerable<News>> GetSortNews(SortParam sortparam)
         {
-            if (sortparam == SortParam.date)
-                return await Task.FromResult(context.Newss.OrderBy(x=>x.uploadDate));
-            if (sortparam == SortParam.view)
-                return await Task.FromResult(context.Newss.OrderByDescending(x => x.Viewers));
-            else
-                return null;
+            switch (sortparam)
+            {
+                case SortParam.Date:
+                    return await Task.FromResult(context.News.OrderBy(x=>x.UploadDate));
+                case SortParam.View:
+                    return await Task.FromResult(context.News.OrderByDescending(x => x.Viewers));
+                default:
+                    return null;
+            }
         }
-        public async Task<IEnumerable<Category>> GetCatigories()
+        public async Task<IEnumerable<Category>> GetCategories()
         {
             return await Task.FromResult(context.Categories);
         }
-        public async Task<IEnumerable<SubCategory>> GetSubCatigories()
+        public async Task<IEnumerable<SubCategory>> GetSubCategories()
         {
             return await Task.FromResult(context.SubCategories);
         }
-        public async Task AddNewss(News news)
+        public async Task AddNews(News news)
         {
-            var existingnews = await context.Newss.FirstOrDefaultAsync(x => x.Id == news.Id);
+            var existingnews = await context.News.FirstOrDefaultAsync(x => x.Id == news.Id);
 
             if (existingnews == null)
             {
 
-                context.Newss.Add(news);
+                context.News.Add(news);
             }
 
             await context.SaveChangesAsync();
         }
-        public async Task<IEnumerable<News>> GetNewsBySubCategory(int SubCategoryID) {
+        public async Task<IEnumerable<News>> GetNewsBySubCategory(int subCategoryId) {
 
-            return await Task.FromResult(context.Newss.Where(x => x.SubCategoryId == SubCategoryID));
+            return await Task.FromResult(context.News.Where(x => x.SubCategoryId == subCategoryId));
         }
-        public async Task<IEnumerable<News>> GetNewsByCategory(int CategoryID)
+        public async Task<IEnumerable<News>> GetNewsByCategory(int categoryId)
         {
-            List<News> news = new List<News>();
+            var news = new List<News>();
 
-            var subCategories = context.SubCategories.Where(a => a.CategoryID == CategoryID).Select(a => a.Id);
+            var subCategories = context.SubCategories.Where(a => a.CategoryId == categoryId).Select(a => a.Id);
             foreach (var category in subCategories)
             {
-                var oneSubCategoryNews= context.Newss.Where(b => b.SubCategoryId == category).AsEnumerable();
+                var oneSubCategoryNews= context.News.Where(b => b.SubCategoryId == category).AsEnumerable();
               
                news = news.Concat(oneSubCategoryNews).ToList();
             }
@@ -78,9 +81,9 @@ namespace ItechartProj.DAL.Repository.Classes
           
         }
 
-        public async Task<IEnumerable<SubCategory>> GetSubCatigoriesByCategory(int CategoryID)
+        public async Task<IEnumerable<SubCategory>> GetSubCategoriesByCategory(int categoryId)
         {
-            return await Task.FromResult(context.SubCategories.Where(x => x.CategoryID == CategoryID));
+            return await Task.FromResult(context.SubCategories.Where(x => x.CategoryId == categoryId));
         }
     }
     }

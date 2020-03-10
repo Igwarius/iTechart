@@ -18,7 +18,7 @@ namespace ItechartProj.Services.Services
                 new Claim(ClaimsIdentity.DefaultRoleClaimType, user.Role),
                 
             };
-            ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, "Token", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
+            var claimsIdentity = new ClaimsIdentity(claims, "Token", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
             return claimsIdentity;
         }
 

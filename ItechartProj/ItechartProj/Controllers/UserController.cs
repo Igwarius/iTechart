@@ -15,16 +15,16 @@ namespace ItechartProj.Controllers
     [ApiController]
     public class UserController : Controller
     {
-        private readonly IRefreshTokensService refreshTokensService;
+        private readonly IRefreshTokenService _refreshTokenService;
         private readonly IUserService userService;
-        public UserController(IUserService userService, IRefreshTokensService refreshTokensService)
+        public UserController(IUserService userService, IRefreshTokenService refreshTokenService)
         {
             this.userService = userService;
-            this.refreshTokensService = refreshTokensService;
+            this._refreshTokenService = refreshTokenService;
         }
         [EnableCors]
         [HttpGet]
-        [Route("GetAllUsers")]
+        [Route("Users")]
         public async Task<IActionResult> GetAllUsers()
         {
             var users = await userService.GetUsers();
@@ -32,7 +32,7 @@ namespace ItechartProj.Controllers
         }
         [EnableCors]
         [HttpPost]
-        [Route("AddUser")]
+        [Route("User")]
         public async Task<IActionResult> AddUser([FromBody]User user)
         {
             try
@@ -62,26 +62,26 @@ namespace ItechartProj.Controllers
             }
         }
         [HttpPost]
-        [Route("RefreshToken")]
+        [Route("Tokens")]
         public async Task<IActionResult> RefreshToken()
         {
             var token = Request.Headers["AccessToken"];
-            var refreshToken = Request.Headers["RefreshToken"];
+            var refreshToken = Request.Headers["Token"];
 
             var principal = ClaimsService.GetPrincipalFromExpiredToken(token);
 
             var username = principal.Identity.Name;
             
 
-            var savedRefreshToken = await refreshTokensService.GetRefreshToken(username); //retrieve the refresh token from a data store
-            if (savedRefreshToken.RefreshToken != refreshToken) return BadRequest("Invalid refresh token");
+            var savedRefreshToken = await _refreshTokenService.GetRefreshToken(username); //retrieve the refresh token from a data store
+            if (savedRefreshToken.Token != refreshToken) return BadRequest("Invalid refresh token");
 
             var identity = ClaimsService.GetIdentity(new User { Login = username});
             var jwttoken = TokenService.CreateToken(identity);
             var newRefreshToken = TokenService.GenerateRefreshToken();
 
-            await refreshTokensService.DeleteRefreshToken(username);
-            await refreshTokensService.SaveRefreshToken(username, newRefreshToken);
+            await _refreshTokenService.DeleteRefreshToken(username);
+            await _refreshTokenService.SaveRefreshToken(username, newRefreshToken);
 
             object toc = new
             {

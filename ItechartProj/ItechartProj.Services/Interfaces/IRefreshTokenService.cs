@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace ItechartProj.Services.Interfaces
 {
-    public interface IRefreshTokensService
+    public interface IRefreshTokenService
     {
-        Task<RefreshTokens> GetRefreshToken(string username);
+        Task<RefreshToken> GetRefreshToken(string username);
 
         Task DeleteRefreshToken(string username);
 

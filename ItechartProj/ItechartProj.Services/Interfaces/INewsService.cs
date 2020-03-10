@@ -7,16 +7,16 @@ using static ItechartProj.DAL.Repository.Classes.NewsRepository;
 
 namespace ItechartProj.Services.Interfaces
 {
-    public interface INewsSevice
+    public interface INewsService
     {
         Task<IEnumerable<News>> GetNews();
         Task AddNews(News news);
         Task<IEnumerable<Category>> GetCategories();
         Task<IEnumerable<SubCategory>> GetSubCategories();
-        Task<IEnumerable<News>> GetNewsByCategory(int categoryID);
-        Task<IEnumerable<News>> GetNewsBySubCategory(int subCategoryID);
-        Task<IEnumerable<SubCategory>> GetSubCategoryByCategory(int categoryID);
+        Task<IEnumerable<News>> GetNewsByCategory(int categoryId);
+        Task<IEnumerable<News>> GetNewsBySubCategory(int subCategoryId);
+        Task<IEnumerable<SubCategory>> GetSubCategoryByCategory(int categoryId);
         Task<IEnumerable<News>> GetSortNews(SortParam sortparam);
-        Task<IEnumerable<News>> GetNewssById(int Id);
+        Task<IEnumerable<News>> GetNewsById(int id);
     }
 }

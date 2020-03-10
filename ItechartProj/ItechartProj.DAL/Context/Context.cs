@@ -7,9 +7,9 @@ namespace ItechartProj.DAL.Context
 {
    public class Context:DbContext
     {
-        public DbSet<RefreshTokens> RefreshTokens { get; set; }
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
         public DbSet<User> Users { get; set; }
-        public DbSet<News> Newss { get; set; }
+        public DbSet<News> News { get; set; }
         public DbSet<Comment> Comments { get; set; }
       
         public DbSet<Category> Categories { get; set; }

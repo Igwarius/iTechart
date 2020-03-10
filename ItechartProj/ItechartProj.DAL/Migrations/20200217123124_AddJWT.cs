@@ -7,7 +7,7 @@ namespace ItechartProj.DAL.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "RefreshTokens",
+                name: "Token",
                 columns: table => new
                 {
                     Login = table.Column<string>(nullable: false),
@@ -28,7 +28,7 @@ namespace ItechartProj.DAL.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "RefreshTokens");
+                name: "Token");
         }
     }
 }

@@ -10,8 +10,8 @@ namespace ItechartProj.DAL.Migrations
                 name: "Tag");
 
             migrationBuilder.AlterColumn<string>(
-                name: "RefreshToken",
-                table: "RefreshTokens",
+                name: "Token",
+                table: "Token",
                 type: "varchar(2000)",
                 nullable: true,
                 oldClrType: typeof(string),
@@ -158,8 +158,8 @@ namespace ItechartProj.DAL.Migrations
                 table: "News");
 
             migrationBuilder.AlterColumn<string>(
-                name: "RefreshToken",
-                table: "RefreshTokens",
+                name: "Token",
+                table: "Token",
                 type: "nvarchar(max)",
                 nullable: true,
                 oldClrType: typeof(string),

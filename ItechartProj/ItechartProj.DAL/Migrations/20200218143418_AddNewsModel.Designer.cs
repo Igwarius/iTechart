@@ -44,17 +44,17 @@ namespace ItechartProj.DAL.Migrations
                     b.ToTable("News");
                 });
 
-            modelBuilder.Entity("ItechartProj.DAL.Models.RefreshTokens", b =>
+            modelBuilder.Entity("ItechartProj.DAL.Models.Token", b =>
                 {
                     b.Property<string>("Login")
                         .HasColumnType("nvarchar(15)");
 
-                    b.Property<string>("RefreshToken")
+                    b.Property<string>("Token")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Login");
 
-                    b.ToTable("RefreshTokens");
+                    b.ToTable("Token");
                 });
 
             modelBuilder.Entity("ItechartProj.DAL.Models.User", b =>
@@ -72,7 +72,7 @@ namespace ItechartProj.DAL.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("ItechartProj.DAL.Models.RefreshTokens", b =>
+            modelBuilder.Entity("ItechartProj.DAL.Models.Token", b =>
                 {
                     b.HasOne("ItechartProj.DAL.Models.User", "User")
                         .WithMany()
