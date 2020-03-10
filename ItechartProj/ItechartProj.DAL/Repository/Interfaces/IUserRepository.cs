@@ -9,7 +9,7 @@ namespace ItechartProj.DAL.Repository.Interfaces
   public  interface IUserRepository
     {
         Task<IEnumerable<User>> GetUsers();
-        Task<User> GetCurrentUser(string Username);
+        Task<User> GetCurrentUser(string username);
         Task AddUser(User user);
         Task<User> CheckUser(User user);
     }

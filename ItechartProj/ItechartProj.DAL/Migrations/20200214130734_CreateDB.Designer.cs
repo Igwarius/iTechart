@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ItechartProj.DAL.Migrations
 {
-    [DbContext(typeof(Contexts))]
+    [DbContext(typeof(Context.Context))]
     [Migration("20200214130734_CreateDB")]
     partial class CreateDB
     {
@@ -26,7 +26,7 @@ namespace ItechartProj.DAL.Migrations
                         .HasColumnType("nvarchar(15)")
                         .HasMaxLength(15);
 
-                    b.Property<string>("password")
+                    b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("nvarchar(20)")
                         .HasMaxLength(20);

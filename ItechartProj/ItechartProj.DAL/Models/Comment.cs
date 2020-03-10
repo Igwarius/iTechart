@@ -6,14 +6,20 @@ using System.Text;
 
 namespace ItechartProj.DAL.Models
 {
-   public class RefreshTokens
+   public class Comment
     {
         [Key]
+        
+        public int Id { get; set; }
         [ForeignKey("User")]
         public string Login { get; set; }
-        [Column(TypeName = "varchar(2000)")]
-        public string RefreshToken { get; set; }
-
-        public User User { get; set; }
+        [ForeignKey("News")]
+        public int NewsId { get; set; }
+        [Required]
+        [Column(TypeName = "varchar(1000)")]
+        public string Text { get; set; }
+        [Required]
+        public int Likes { get; set; }
     }
 }
+ 

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ItechartProj.DAL.Models;
 using ItechartProj.Services.Interfaces;
+using ItechartProj.Services.Services;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -14,11 +15,12 @@ namespace ItechartProj.Controllers
     [ApiController]
     public class UserController : Controller
     {
+        private readonly IRefreshTokensService refreshTokensService;
         private readonly IUserService userService;
-        public UserController(IUserService userService)
+        public UserController(IUserService userService, IRefreshTokensService refreshTokensService)
         {
             this.userService = userService;
-            
+            this.refreshTokensService = refreshTokensService;
         }
         [EnableCors]
         [HttpGet]
@@ -56,8 +58,38 @@ namespace ItechartProj.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+               return BadRequest(ex.Message);
             }
+        }
+        [HttpPost]
+        [Route("RefreshToken")]
+        public async Task<IActionResult> RefreshToken()
+        {
+            var token = Request.Headers["AccessToken"];
+            var refreshToken = Request.Headers["RefreshToken"];
+
+            var principal = ClaimsService.GetPrincipalFromExpiredToken(token);
+
+            var username = principal.Identity.Name;
+            
+
+            var savedRefreshToken = await refreshTokensService.GetRefreshToken(username); //retrieve the refresh token from a data store
+            if (savedRefreshToken.RefreshToken != refreshToken) return BadRequest("Invalid refresh token");
+
+            var identity = ClaimsService.GetIdentity(new User { Login = username});
+            var jwttoken = TokenService.CreateToken(identity);
+            var newRefreshToken = TokenService.GenerateRefreshToken();
+
+            await refreshTokensService.DeleteRefreshToken(username);
+            await refreshTokensService.SaveRefreshToken(username, newRefreshToken);
+
+            object toc = new
+            {
+                token = jwttoken,
+                refreshToken = newRefreshToken
+            };
+
+            return Ok(toc);
         }
 
 

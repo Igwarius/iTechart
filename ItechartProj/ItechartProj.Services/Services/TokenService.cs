@@ -1,4 +1,5 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using ItechartProj.Services.Interfaces;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -8,8 +9,7 @@ using System.Text;
 
 namespace ItechartProj.Services.Services
 {
-   public class TokenService
-    {
+   public class TokenService { 
         public static object CreateToken(ClaimsIdentity identity)
         {
             var now = DateTime.UtcNow;
@@ -91,7 +91,5 @@ namespace ItechartProj.Services.Services
                 return Convert.ToBase64String(randomNumber);
             }
         }
-
-    
 }
 }

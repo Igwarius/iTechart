@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ItechartProj.DAL.Repository.Interfaces
+namespace ItechartProj.Services.Interfaces
 {
-    public  interface IRefreshTokensRepository
+    public interface IRefreshTokensService
     {
         Task<RefreshTokens> GetRefreshToken(string username);
 

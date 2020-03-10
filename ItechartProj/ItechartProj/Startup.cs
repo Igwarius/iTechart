@@ -12,6 +12,10 @@ using ItechartProj.DAL.Repository.Classes;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using ItechartProj.Services;
+using WebServer.Services.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+
 namespace ItechartProj
 {
     public class Startup
@@ -28,6 +32,11 @@ namespace ItechartProj
         {
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<INewsSevice, NewssService>();
+            services.AddTransient<INewsRepository, NewsRepository>();
+            services.AddTransient<IRefreshTokensRepository, RefreshTokensRepository>();
+            services.AddTransient<IRefreshTokensService, RefreshTokenService>();
+         
             services.AddControllers();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                    .AddJwtBearer(options =>
@@ -53,12 +62,22 @@ namespace ItechartProj
                             ValidateIssuerSigningKey = true,
                        };
                    });
-
-
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("MyPolicy", policy =>
+                {
+                    
+                    policy.Requirements.Add(new AccountRequirement());
+                    policy.AuthenticationSchemes.Add(JwtBearerDefaults.AuthenticationScheme);
+                  //  policy.RequireRole("user");
+                });
+            });
+            services.AddScoped<IAuthorizationHandler, AuthFilter>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddCors();
          
-            services.AddDbContext<Contexts>(options =>
+            services.AddDbContext<Context>(options =>
            options.UseSqlServer(Configuration.GetConnectionString("Context")));
             
             }

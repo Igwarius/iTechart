@@ -7,7 +7,7 @@ namespace ItechartProj.DAL.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AlterColumn<string>(
-                name: "password",
+                name: "Password",
                 table: "Users",
                 type: "varchar(200)",
                 nullable: false,
@@ -19,7 +19,7 @@ namespace ItechartProj.DAL.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AlterColumn<string>(
-                name: "password",
+                name: "Password",
                 table: "Users",
                 type: "nvarchar(600)",
                 maxLength: 600,
