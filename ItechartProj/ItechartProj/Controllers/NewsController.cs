@@ -21,7 +21,7 @@ namespace ItechartProj.Controllers
             this._newsService = newsService;
 
         }
-   //   [Authorize(Policy = "MyPolicy")]
+    [Authorize(Policy = "MyPolicy")]
         [HttpGet]
         [Route("News")]
         public async Task<IActionResult> GetAllNews()
@@ -102,7 +102,7 @@ namespace ItechartProj.Controllers
 
         [HttpPost]
         [Route("News")]
-        public async Task<IActionResult> AddUser([FromBody]News news)
+        public async Task<IActionResult> AddNews([FromBody]News news)
         {
             try
             {

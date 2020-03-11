@@ -16,10 +16,10 @@ namespace ItechartProj.Controllers
     public class UserController : Controller
     {
         private readonly IRefreshTokenService _refreshTokenService;
-        private readonly IUserService userService;
+        private readonly IUserService _userService;
         public UserController(IUserService userService, IRefreshTokenService refreshTokenService)
         {
-            this.userService = userService;
+            this._userService = userService;
             this._refreshTokenService = refreshTokenService;
         }
         [EnableCors]
@@ -27,7 +27,7 @@ namespace ItechartProj.Controllers
         [Route("Users")]
         public async Task<IActionResult> GetAllUsers()
         {
-            var users = await userService.GetUsers();
+            var users = await _userService.GetUsers();
             return Ok(users);
         }
         [EnableCors]
@@ -37,7 +37,7 @@ namespace ItechartProj.Controllers
         {
             try
             {
-                await userService.AddUser(user);
+                await _userService.AddUser(user);
                 return Ok();
             }
             catch (Exception ex)
@@ -52,7 +52,7 @@ namespace ItechartProj.Controllers
         {
             try
             {
-                var response = await userService.CheckUser(user);
+                var response = await _userService.CheckUser(user);
                 if (response != null) return Ok(response);
                 else return NotFound();
             }

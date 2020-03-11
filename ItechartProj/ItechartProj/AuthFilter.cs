@@ -14,7 +14,7 @@ namespace ItechartProj
     public class AuthFilter : AuthorizationHandler<AccountRequirement>
     {
         private readonly IRefreshTokenService _refreshTokenService;
-        private readonly IHttpContextAccessor httpContextAccessor;
+        private readonly IHttpContextAccessor _httpContextAccessor;
         protected string Role;
 
         public AuthFilter() { }
@@ -22,18 +22,22 @@ namespace ItechartProj
         public AuthFilter(IRefreshTokenService refreshTokenService, IHttpContextAccessor httpContextAccessor)
         {
             this._refreshTokenService = refreshTokenService;
-            this.httpContextAccessor = httpContextAccessor;
+            this._httpContextAccessor = httpContextAccessor;
         }
 
         protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, AccountRequirement requirement)
         {
             try
             {
-                HttpContext httpContext = httpContextAccessor.HttpContext;
+               
+                
+                HttpContext httpContext = _httpContextAccessor.HttpContext;
                 string jwtToken = httpContext.Request.Headers["access_token"];
-                 
-                string refreshtoken = httpContext.Request.Headers["Token"];
-
+                jwtToken = jwtToken.Remove(0, 1);
+                jwtToken = jwtToken.Remove(jwtToken.Length-1,1);
+                string refreshtoken = httpContext.Request.Headers["refreshtoken"];
+                refreshtoken = refreshtoken.Remove(0, 1);
+                refreshtoken = refreshtoken.Remove(refreshtoken.Length - 1, 1);
                 if (jwtToken == "null" || refreshtoken == "null")
                 {
                     context.Fail();
