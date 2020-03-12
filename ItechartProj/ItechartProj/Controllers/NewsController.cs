@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using static ItechartProj.DAL.Repository.Classes.NewsRepository;
 
 namespace ItechartProj.Controllers
@@ -15,13 +16,14 @@ namespace ItechartProj.Controllers
     [ApiController]
     public class NewsController : Controller
     {
+        private readonly ICommentService _commentService;
         private readonly INewsService _newsService;
-        public NewsController(INewsService newsService)
+        public NewsController(INewsService newsService, ICommentService commentService)
         {
             this._newsService = newsService;
-
+            this._commentService = commentService;
         }
-    [Authorize(Policy = "MyPolicy")]
+    //[Authorize(Policy = "MyPolicy" ) ]
         [HttpGet]
         [Route("News")]
         public async Task<IActionResult> GetAllNews()
@@ -35,6 +37,13 @@ namespace ItechartProj.Controllers
         {
             var news  = await _newsService.GetNewsById(id);
             return Ok(news);
+        }
+        [HttpGet]
+        [Route("Comments/{id}")]
+        public async Task<IActionResult> GetCommentsForNews(int id)
+        {
+            var comments = await _commentService.GetCommentsForNews(id);
+            return Ok(comments);
         }
         [HttpGet]
         [Route("NewsByCategory/{CategoryID}")]
@@ -98,7 +107,21 @@ namespace ItechartProj.Controllers
             var news = await _newsService.GetSubCategories();
             return Ok(news);
         }
-
+        [Authorize(Policy = "MyPolicy")]
+        [HttpPost]
+        [Route("Comment")]
+        public async Task<IActionResult> AddComment([FromBody]Comment comment)
+        {
+            try
+            {
+                await _commentService.AddComments(comment);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
         [HttpPost]
         [Route("News")]

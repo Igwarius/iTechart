@@ -36,7 +36,8 @@ namespace ItechartProj
             services.AddTransient<INewsRepository, NewsRepository>();
             services.AddTransient<IRefreshTokenRepository, RefreshTokenRepository>();
             services.AddTransient<IRefreshTokenService, RefreshTokenService>();
-         
+            services.AddTransient<ICommentRepository, CommentRepository>();
+            services.AddTransient<ICommentService, CommentService>();
             services.AddControllers();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                    .AddJwtBearer(options =>
@@ -69,7 +70,7 @@ namespace ItechartProj
                     
                     policy.Requirements.Add(new AccountRequirement());
                     policy.AuthenticationSchemes.Add(JwtBearerDefaults.AuthenticationScheme);
-                  //  policy.RequireRole("user");
+                  // policy.RequireRole("User");
                 });
             });
             services.AddScoped<IAuthorizationHandler, AuthFilter>();

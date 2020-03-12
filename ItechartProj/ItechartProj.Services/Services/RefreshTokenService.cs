@@ -23,6 +23,7 @@ namespace WebServer.Services.Services
             {
                 Login = res.Login,
                 Token = res.Token
+                
             };
 
             return refreshToken;

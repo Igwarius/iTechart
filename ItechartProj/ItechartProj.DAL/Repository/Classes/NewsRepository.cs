@@ -52,9 +52,9 @@ namespace ItechartProj.DAL.Repository.Classes
         }
         public async Task AddNews(News news)
         {
-            var existingnews = await context.News.FirstOrDefaultAsync(x => x.Id == news.Id);
+            var existingNews = await context.News.FirstOrDefaultAsync(x => x.Id == news.Id);
 
-            if (existingnews == null)
+            if (existingNews == null)
             {
 
                 context.News.Add(news);
