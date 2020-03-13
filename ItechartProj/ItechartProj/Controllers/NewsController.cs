@@ -122,6 +122,21 @@ namespace ItechartProj.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        
+        [HttpGet]
+        [Route("Views/{id}")]
+        public async Task<IActionResult> AddViews(int id)
+        {
+            try
+            {
+                await _newsService.AddViews(id);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
         [HttpPost]
         [Route("News")]

@@ -11,12 +11,18 @@ namespace ItechartProj.Services.Services
 {
     public class NewsService : INewsService
     {
+
         private readonly INewsRepository _newsRepository;
 
         public NewsService(INewsRepository newsRepository)
         {
             this._newsRepository = newsRepository;
 
+        }
+
+        public async Task AddViews(int id)
+        {
+            await _newsRepository.AddViews(id);
         }
 
         public async Task<IEnumerable<News>> GetNews()

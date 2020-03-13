@@ -18,5 +18,6 @@ namespace ItechartProj.Services.Interfaces
         Task<IEnumerable<SubCategory>> GetSubCategoryByCategory(int categoryId);
         Task<IEnumerable<News>> GetSortNews(SortParam sortparam);
         Task<IEnumerable<News>> GetNewsById(int id);
+        Task AddViews(int id);
     }
 }

@@ -25,6 +25,14 @@ namespace ItechartProj.DAL.Repository.Classes
         {
             return await Task.FromResult(context.News.Where(x=>x.Id==id));
         }
+
+        public async Task AddViews(int id)
+        {
+            context.News.First(x => x.Id == id).Viewers =
+                context.News.First(x => x.Id == id).Viewers + 1;
+            await context.SaveChangesAsync();
+        }
+
         public enum SortParam 
         {
             Date,

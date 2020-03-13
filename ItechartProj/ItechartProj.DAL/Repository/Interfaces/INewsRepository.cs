@@ -1,6 +1,7 @@
 ﻿using ItechartProj.DAL.Models;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Text;
 using System.Threading.Tasks;
 using static ItechartProj.DAL.Repository.Classes.NewsRepository;
@@ -19,5 +20,6 @@ namespace ItechartProj.DAL.Repository.Interfaces
         Task<IEnumerable<News>> GetNewsBySubCategory(int subCategoryId);
         Task<IEnumerable<News>> GetSortNews(SortParam sortparam);
         Task<IEnumerable<News>> GetNewsById(int id);
+        Task AddViews(int id);
     }
 }
