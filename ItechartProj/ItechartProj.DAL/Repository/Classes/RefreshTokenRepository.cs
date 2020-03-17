@@ -1,20 +1,17 @@
-﻿using ItechartProj.DAL.Context;
+﻿using System.Threading.Tasks;
+using ItechartProj.DAL.Contexts;
 using ItechartProj.DAL.Models;
 using ItechartProj.DAL.Repository.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ItechartProj.DAL.Repository.Classes
 {
     public class RefreshTokenRepository : IRefreshTokenRepository
     {
-        private readonly Context.Context _commonContext;
+        private readonly Context _commonContext;
 
-        public RefreshTokenRepository(Context.Context commonContext)
+        public RefreshTokenRepository(Context commonContext)
         {
-            this._commonContext = commonContext;
+            _commonContext = commonContext;
         }
 
         public async Task<RefreshToken> GetRefreshToken(string username)
@@ -32,7 +29,7 @@ namespace ItechartProj.DAL.Repository.Classes
 
         public async Task SaveRefreshToken(string login, string newRefreshToken)
         {
-            RefreshToken refreshToken = new RefreshToken { Login = login, Token = newRefreshToken };
+            var refreshToken = new RefreshToken {Login = login, Token = newRefreshToken};
             var existingTokens = await _commonContext.RefreshTokens.FindAsync(login);
             if (existingTokens != null) _commonContext.RefreshTokens.Remove(existingTokens);
 

@@ -7,117 +7,114 @@ namespace ItechartProj.DAL.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Tag");
+                "Tag");
 
             migrationBuilder.AlterColumn<string>(
-                name: "Token",
-                table: "Token",
-                type: "varchar(2000)",
+                "Token",
+                "Token",
+                "varchar(2000)",
                 nullable: true,
                 oldClrType: typeof(string),
                 oldType: "nvarchar(max)",
                 oldNullable: true);
 
             migrationBuilder.AddColumn<int>(
-                name: "CategoryID",
-                table: "News",
+                "CategoryID",
+                "News",
                 nullable: false,
                 defaultValue: 0);
 
             migrationBuilder.AddColumn<int>(
-                name: "SubCategoryId",
-                table: "News",
+                "SubCategoryId",
+                "News",
                 nullable: false,
                 defaultValue: 0);
 
             migrationBuilder.CreateTable(
-                name: "Categories",
-                columns: table => new
+                "Categories",
+                table => new
                 {
-                    Id = table.Column<int>(nullable: false)
+                    Id = table.Column<int>()
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(nullable: false)
+                    Name = table.Column<string>()
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Categories", x => x.Id);
-                });
+                constraints: table => { table.PrimaryKey("PK_Categories", x => x.Id); });
 
             migrationBuilder.CreateTable(
-                name: "Comments",
-                columns: table => new
+                "Comments",
+                table => new
                 {
-                    Id = table.Column<int>(nullable: false)
+                    Id = table.Column<int>()
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Login = table.Column<string>(nullable: true),
-                    NewsId = table.Column<int>(nullable: false),
-                    Text = table.Column<string>(type: "varchar(1000)", nullable: false),
-                    Likes = table.Column<int>(nullable: false)
+                    NewsId = table.Column<int>(),
+                    Text = table.Column<string>("varchar(1000)"),
+                    Likes = table.Column<int>()
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Comments", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Comments_Newss_NewsId",
-                        column: x => x.NewsId,
-                        principalTable: "News",
-                        principalColumn: "Id",
+                        "FK_Comments_Newss_NewsId",
+                        x => x.NewsId,
+                        "News",
+                        "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "SubCategories",
-                columns: table => new
+                "SubCategories",
+                table => new
                 {
-                    Id = table.Column<int>(nullable: false)
+                    Id = table.Column<int>()
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(nullable: false),
-                    CategoryID = table.Column<int>(nullable: false)
+                    Name = table.Column<string>(),
+                    CategoryID = table.Column<int>()
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_SubCategories", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_SubCategories_Categories_CategoryID",
-                        column: x => x.CategoryID,
-                        principalTable: "Categories",
-                        principalColumn: "Id",
+                        "FK_SubCategories_Categories_CategoryID",
+                        x => x.CategoryID,
+                        "Categories",
+                        "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Newss_CategoryID",
-                table: "News",
-                column: "CategoryID");
+                "IX_Newss_CategoryID",
+                "News",
+                "CategoryID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Newss_SubCategoryId",
-                table: "News",
-                column: "SubCategoryId");
+                "IX_Newss_SubCategoryId",
+                "News",
+                "SubCategoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Comments_NewsId",
-                table: "Comments",
-                column: "NewsId");
+                "IX_Comments_NewsId",
+                "Comments",
+                "NewsId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SubCategories_CategoryID",
-                table: "SubCategories",
-                column: "CategoryID");
+                "IX_SubCategories_CategoryID",
+                "SubCategories",
+                "CategoryID");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Newss_Categories_CategoryID",
-                table: "News",
-                column: "CategoryID",
-                principalTable: "Categories",
+                "FK_Newss_Categories_CategoryID",
+                "News",
+                "CategoryID",
+                "Categories",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Newss_SubCategories_SubCategoryId",
-                table: "News",
-                column: "SubCategoryId",
-                principalTable: "SubCategories",
+                "FK_Newss_SubCategories_SubCategoryId",
+                "News",
+                "SubCategoryId",
+                "SubCategories",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
         }
@@ -125,69 +122,69 @@ namespace ItechartProj.DAL.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_Newss_Categories_CategoryID",
-                table: "News");
+                "FK_Newss_Categories_CategoryID",
+                "News");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_Newss_SubCategories_SubCategoryId",
-                table: "News");
+                "FK_Newss_SubCategories_SubCategoryId",
+                "News");
 
             migrationBuilder.DropTable(
-                name: "Comments");
+                "Comments");
 
             migrationBuilder.DropTable(
-                name: "SubCategories");
+                "SubCategories");
 
             migrationBuilder.DropTable(
-                name: "Categories");
+                "Categories");
 
             migrationBuilder.DropIndex(
-                name: "IX_Newss_CategoryID",
-                table: "News");
+                "IX_Newss_CategoryID",
+                "News");
 
             migrationBuilder.DropIndex(
-                name: "IX_Newss_SubCategoryId",
-                table: "News");
+                "IX_Newss_SubCategoryId",
+                "News");
 
             migrationBuilder.DropColumn(
-                name: "CategoryID",
-                table: "News");
+                "CategoryID",
+                "News");
 
             migrationBuilder.DropColumn(
-                name: "SubCategoryId",
-                table: "News");
+                "SubCategoryId",
+                "News");
 
             migrationBuilder.AlterColumn<string>(
-                name: "Token",
-                table: "Token",
-                type: "nvarchar(max)",
+                "Token",
+                "Token",
+                "nvarchar(max)",
                 nullable: true,
                 oldClrType: typeof(string),
                 oldType: "varchar(2000)",
                 oldNullable: true);
 
             migrationBuilder.CreateTable(
-                name: "Tag",
-                columns: table => new
+                "Tag",
+                table => new
                 {
-                    TagName = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
-                    NewsId = table.Column<int>(type: "int", nullable: true)
+                    TagName = table.Column<string>("nvarchar(15)", maxLength: 15),
+                    NewsId = table.Column<int>("int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Tag", x => x.TagName);
                     table.ForeignKey(
-                        name: "FK_Tag_Newss_NewsId",
-                        column: x => x.NewsId,
-                        principalTable: "News",
-                        principalColumn: "Id",
+                        "FK_Tag_Newss_NewsId",
+                        x => x.NewsId,
+                        "News",
+                        "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tag_NewsId",
-                table: "Tag",
-                column: "NewsId");
+                "IX_Tag_NewsId",
+                "Tag",
+                "NewsId");
         }
     }
 }

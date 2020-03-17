@@ -1,17 +1,13 @@
-﻿using ItechartProj.DAL.Models;
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using ItechartProj.DAL.Models;
 using static ItechartProj.DAL.Repository.Classes.NewsRepository;
 
 namespace ItechartProj.DAL.Repository.Interfaces
 {
-   public interface INewsRepository
+    public interface INewsRepository
     {
         Task<IEnumerable<News>> GetNews();
-    
         Task AddNews(News news);
         Task<IEnumerable<Category>> GetCategories();
         Task<IEnumerable<SubCategory>> GetSubCategories();

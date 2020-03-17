@@ -1,41 +1,34 @@
-﻿using ItechartProj.DAL.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using ItechartProj.DAL.Repository.Interfaces;
+﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using ItechartProj.DAL.Contexts;
+using ItechartProj.DAL.Models;
+using ItechartProj.DAL.Repository.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace ItechartProj.DAL.Repository.Classes
 {
-   public class CommentRepository:ICommentRepository
+    public class CommentRepository : ICommentRepository
     {
-        private readonly Context.Context context;
-        public CommentRepository(Context.Context contexts)
+        private readonly Context _context;
+
+        public CommentRepository(Context contexts)
         {
-            this.context = contexts;
+            _context = contexts;
         }
 
         public async Task AddComments(Comment comment)
-        { 
-            var existingNews = await context.News.FirstOrDefaultAsync(x => x.Id == comment.Id);
+        {
+            var existingNews = await _context.News.FirstOrDefaultAsync(x => x.Id == comment.Id);
 
-                if (existingNews == null)
-                { 
-                    context.Comments.Add(comment);
-                }
+            if (existingNews == null) _context.Comments.Add(comment);
 
-                await context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<Comment>> GetCommentsForNews(int newsId)
         {
-            return await Task.FromResult(context.Comments.Where(x => x.NewsId == newsId));
-
+            return await Task.FromResult(_context.Comments.Where(x => x.NewsId == newsId));
         }
-
-
     }
 }
-

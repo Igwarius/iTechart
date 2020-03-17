@@ -1,14 +1,12 @@
-﻿using ItechartProj.DAL.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using ItechartProj.DAL.Models;
 
 namespace ItechartProj.Services.Interfaces
 {
-   public interface ICommentService
+    public interface ICommentService
     {
         Task<IEnumerable<Comment>> GetCommentsForNews(int newsId);
-        Task  AddComments(Comment comment);
+        Task AddComments(Comment comment);
     }
 }

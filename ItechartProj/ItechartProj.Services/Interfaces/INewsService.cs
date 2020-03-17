@@ -1,8 +1,6 @@
-﻿using ItechartProj.DAL.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using ItechartProj.DAL.Models;
 using static ItechartProj.DAL.Repository.Classes.NewsRepository;
 
 namespace ItechartProj.Services.Interfaces

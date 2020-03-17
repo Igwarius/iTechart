@@ -1,17 +1,12 @@
-﻿using ItechartProj.DAL.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using ItechartProj.DAL.Models;
 
 namespace ItechartProj.DAL.Repository.Interfaces
 {
-    public  interface IRefreshTokenRepository
+    public interface IRefreshTokenRepository
     {
         Task<RefreshToken> GetRefreshToken(string username);
-
         Task DeleteRefreshToken(string username);
-
         Task SaveRefreshToken(string username, string newRefreshToken);
     }
 }

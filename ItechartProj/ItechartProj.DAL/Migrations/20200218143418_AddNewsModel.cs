@@ -7,25 +7,22 @@ namespace ItechartProj.DAL.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "News",
-                columns: table => new
+                "News",
+                table => new
                 {
-                    Id = table.Column<int>(nullable: false)
+                    Id = table.Column<int>()
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(nullable: false),
-                    Text = table.Column<string>(type: "varchar(200)", nullable: false),
-                    Image = table.Column<string>(nullable: false)
+                    Name = table.Column<string>(),
+                    Text = table.Column<string>("varchar(200)"),
+                    Image = table.Column<string>()
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Newss", x => x.Id);
-                });
+                constraints: table => { table.PrimaryKey("PK_Newss", x => x.Id); });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "News");
+                "News");
         }
     }
 }

@@ -1,7 +1,7 @@
-﻿using ItechartProj.DAL.Models;
+﻿using System.Threading.Tasks;
+using ItechartProj.DAL.Models;
 using ItechartProj.DAL.Repository.Interfaces;
 using ItechartProj.Services.Interfaces;
-using System.Threading.Tasks;
 
 namespace WebServer.Services.Services
 {
@@ -11,7 +11,7 @@ namespace WebServer.Services.Services
 
         public RefreshTokenService(IRefreshTokenRepository refreshTokenRepository)
         {
-            this._refreshTokenRepository = refreshTokenRepository;
+            _refreshTokenRepository = refreshTokenRepository;
         }
 
         public async Task<RefreshToken> GetRefreshToken(string login)
@@ -23,7 +23,6 @@ namespace WebServer.Services.Services
             {
                 Login = res.Login,
                 Token = res.Token
-                
             };
 
             return refreshToken;

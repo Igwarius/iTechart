@@ -1,40 +1,42 @@
-﻿using ItechartProj.DAL.Models;
+﻿using System;
+using System.Threading.Tasks;
+using ItechartProj.DAL.Models;
 using ItechartProj.Services.Interfaces;
 using ItechartProj.Services.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
-using System;
-using System.Threading.Tasks;
 
 namespace ItechartProj
 {
     public class AccountRequirement : IAuthorizationRequirement
- { }
+    {
+    }
 
     public class AuthFilter : AuthorizationHandler<AccountRequirement>
     {
-        private readonly IRefreshTokenService _refreshTokenService;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IRefreshTokenService _refreshTokenService;
         protected string Role;
 
-        public AuthFilter() { }
+        public AuthFilter()
+        {
+        }
 
         public AuthFilter(IRefreshTokenService refreshTokenService, IHttpContextAccessor httpContextAccessor)
         {
-            this._refreshTokenService = refreshTokenService;
-            this._httpContextAccessor = httpContextAccessor;
+            _refreshTokenService = refreshTokenService;
+            _httpContextAccessor = httpContextAccessor;
         }
 
-        protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, AccountRequirement requirement)
+        protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context,
+            AccountRequirement requirement)
         {
             try
             {
-               
-                
-                HttpContext httpContext = _httpContextAccessor.HttpContext;
+                var httpContext = _httpContextAccessor.HttpContext;
                 string jwtToken = httpContext.Request.Headers["access_token"];
                 jwtToken = jwtToken.Remove(0, 1);
-                jwtToken = jwtToken.Remove(jwtToken.Length-1,1);
+                jwtToken = jwtToken.Remove(jwtToken.Length - 1, 1);
                 string refreshtoken = httpContext.Request.Headers["refreshtoken"];
                 refreshtoken = refreshtoken.Remove(0, 1);
                 refreshtoken = refreshtoken.Remove(refreshtoken.Length - 1, 1);
@@ -52,16 +54,15 @@ namespace ItechartProj
                     var principal = ClaimsService.GetPrincipalFromExpiredToken(jwtToken);
 
                     var login = principal.Identity.Name;
-                    var role = principal.FindFirst("http://schemas.microsoft.com/ws/2008/06/identity/claims/role").Value;
-                   
+                    var role = principal.FindFirst("http://schemas.microsoft.com/ws/2008/06/identity/claims/role")
+                        .Value;
 
                     var savedRefreshToken = await _refreshTokenService.GetRefreshToken(login);
-                
 
                     var identity = ClaimsService.GetIdentity(new User
                     {
                         Login = login,
-                        
+
                         Role = role
                     });
 
@@ -71,7 +72,7 @@ namespace ItechartProj
                     await _refreshTokenService.SaveRefreshToken(login, newRefreshToken);
 
                     var propertyInfo = token.GetType().GetProperty("access_token");
-                    string temp = (string)propertyInfo.GetValue(token, null);
+                    var temp = (string) propertyInfo.GetValue(token, null);
 
                     httpContext.Response.Headers["AccessToken"] = temp;
                     httpContext.Request.Headers["Authorization"] = "Bearer " + temp;
@@ -82,6 +83,7 @@ namespace ItechartProj
             {
                 throw e;
             }
+
             context.Succeed(requirement);
             await Task.Yield();
         }

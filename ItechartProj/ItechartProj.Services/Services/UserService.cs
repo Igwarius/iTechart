@@ -1,12 +1,9 @@
-﻿using ItechartProj.Controllers;
-using ItechartProj.DAL.Context;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using ItechartProj.Controllers;
 using ItechartProj.DAL.Models;
 using ItechartProj.DAL.Repository.Interfaces;
 using ItechartProj.Services.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ItechartProj.Services.Services
 {
@@ -17,13 +14,15 @@ namespace ItechartProj.Services.Services
 
         public UserService(IUserRepository userRepository, IRefreshTokenRepository refreshTokensRepository)
         {
-            this._userRepository = userRepository;
-            this._refreshTokensRepository = refreshTokensRepository;
+            _userRepository = userRepository;
+            _refreshTokensRepository = refreshTokensRepository;
         }
+
         public async Task<IEnumerable<User>> GetUsers()
         {
             return await _userRepository.GetUsers();
         }
+
         public async Task<User> GetCurrentUser(string Username)
         {
             var founduser = await _userRepository.GetCurrentUser(Username);
@@ -31,30 +30,29 @@ namespace ItechartProj.Services.Services
 
             return founduser;
         }
+
         public Task AddUser(User user)
         {
-           return _userRepository.AddUser(new User
+            return _userRepository.AddUser(new User
             {
-               Login = user.Login,
-                Password = HashFunc.GetHashFromPassword (
-                user.Password),
+                Login = user.Login,
+                Password = HashFunc.GetHashFromPassword(
+                    user.Password),
                 Role = "user"
-
             });
         }
 
         public async Task<object> CheckUser(User user)
         {
-            var founduser = await _userRepository.CheckUser(new User { Login = user.Login, Password = HashFunc.GetHashFromPassword(user.Password),Role=user.Role });
+            var founduser = await _userRepository.CheckUser(new User
+                {Login = user.Login, Password = HashFunc.GetHashFromPassword(user.Password), Role = user.Role});
             if (founduser == null) return null;
-
-          
 
             var foundUser = new User
             {
-                Login= founduser.Login,
+                Login = founduser.Login,
                 Password = founduser.Password,
-             Role=founduser.Role
+                Role = founduser.Role
             };
 
             var identity = ClaimsService.GetIdentity(foundUser);
@@ -64,20 +62,18 @@ namespace ItechartProj.Services.Services
             if (jwttoken != null)
             {
                 var newRefreshToken = TokenService.GenerateRefreshToken();
-                 await _refreshTokensRepository.SaveRefreshToken(founduser.Login, newRefreshToken);
+                await _refreshTokensRepository.SaveRefreshToken(founduser.Login, newRefreshToken);
 
                 var tokens = new
                 {
                     token = jwttoken,
                     refreshToken = newRefreshToken
                 };
-              
 
                 return tokens;
-
             }
+
             return null;
         }
-
     }
 }

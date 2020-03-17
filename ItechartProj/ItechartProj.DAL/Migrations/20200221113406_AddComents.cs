@@ -7,56 +7,56 @@ namespace ItechartProj.DAL.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AlterColumn<string>(
-                name: "Text",
-                table: "News",
-                type: "varchar(1000)",
+                "Text",
+                "News",
+                "varchar(1000)",
                 nullable: false,
                 oldClrType: typeof(string),
                 oldType: "varchar(200)");
 
             migrationBuilder.AddColumn<int>(
-                name: "Viewers",
-                table: "News",
+                "Viewers",
+                "News",
                 nullable: false,
                 defaultValue: 0);
 
             migrationBuilder.CreateTable(
-                name: "Tag",
-                columns: table => new
+                "Tag",
+                table => new
                 {
-                    TagName = table.Column<string>(maxLength: 15, nullable: false),
+                    TagName = table.Column<string>(maxLength: 15),
                     NewsId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Tag", x => x.TagName);
                     table.ForeignKey(
-                        name: "FK_Tag_Newss_NewsId",
-                        column: x => x.NewsId,
-                        principalTable: "News",
-                        principalColumn: "Id",
+                        "FK_Tag_Newss_NewsId",
+                        x => x.NewsId,
+                        "News",
+                        "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tag_NewsId",
-                table: "Tag",
-                column: "NewsId");
+                "IX_Tag_NewsId",
+                "Tag",
+                "NewsId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Tag");
+                "Tag");
 
             migrationBuilder.DropColumn(
-                name: "Viewers",
-                table: "News");
+                "Viewers",
+                "News");
 
             migrationBuilder.AlterColumn<string>(
-                name: "Text",
-                table: "News",
-                type: "varchar(200)",
+                "Text",
+                "News",
+                "varchar(200)",
                 nullable: false,
                 oldClrType: typeof(string),
                 oldType: "varchar(1000)");
