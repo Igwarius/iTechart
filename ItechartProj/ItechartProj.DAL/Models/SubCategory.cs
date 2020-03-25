@@ -11,9 +11,12 @@ namespace ItechartProj.DAL.Models
             News = new List<News>();
         }
 
-        [Key] public int Id { get; set; }
+        [Key] 
+        public int Id { get; set; }
         public List<News> News { get; set; }
-        [Required] public string Name { get; set; }
-        [ForeignKey("Category")] public int CategoryId { get; set; }
+        [Required] 
+        public string Name { get; set; }
+        [ForeignKey("Category")] 
+        public int CategoryId { get; set; }
     }
 }

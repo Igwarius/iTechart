@@ -32,10 +32,10 @@ namespace ItechartProj.Services.Services
             if (token == null) return null;
             var claims = new List<Claim>();
             var handler = new JwtSecurityTokenHandler();
-            var tokenS = handler.ReadToken(token) as JwtSecurityToken;
+            var readToken = handler.ReadToken(token) as JwtSecurityToken;
 
-            if (tokenS != null)
-                foreach (var item in tokenS.Claims)
+            if (readToken != null)
+                foreach (var item in readToken.Claims)
                     claims.Add(item);
 
             return claims;

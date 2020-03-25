@@ -1,12 +1,11 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using ItechartProj.DAL.Models;
 using ItechartProj.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ItechartProj.Controllers
 {
-    [Route("api/User")]
+    [Route("user")]
     [ApiController]
     public class UserController : Controller
     {
@@ -20,7 +19,7 @@ namespace ItechartProj.Controllers
         }
 
         [HttpGet]
-        [Route("Users")]
+        [Route("users")]
         public async Task<IActionResult> GetAllUsers()
         {
             var users = await _userService.GetUsers();
@@ -28,34 +27,20 @@ namespace ItechartProj.Controllers
         }
 
         [HttpPost]
-        [Route("User")]
+        [Route("user")]
         public async Task<IActionResult> AddUser([FromBody] User user)
         {
-            try
-            {
-                await _userService.AddUser(user);
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            await _userService.AddUser(user);
+            return Ok();
         }
 
         [HttpPost]
-        [Route("SignIn")]
+        [Route("sign-in")]
         public async Task<IActionResult> CheckUser([FromBody] User user)
         {
-            try
-            {
-                var response = await _userService.CheckUser(user);
-                if (response != null) return Ok(response);
-                return NotFound();
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            var response = await _userService.CheckUser(user);
+            if (response != null) return Ok(response);
+            return NotFound();
         }
     }
 }

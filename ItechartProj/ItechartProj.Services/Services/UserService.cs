@@ -25,10 +25,10 @@ namespace ItechartProj.Services.Services
 
         public async Task<User> GetCurrentUser(string Username)
         {
-            var founduser = await _userRepository.GetCurrentUser(Username);
-            if (founduser == null) return null;
+            var foundUser = await _userRepository.GetCurrentUser(Username);
+            if (foundUser == null) return null;
 
-            return founduser;
+            return foundUser;
         }
 
         public Task AddUser(User user)
@@ -38,35 +38,35 @@ namespace ItechartProj.Services.Services
                 Login = user.Login,
                 Password = HashFunc.GetHashFromPassword(
                     user.Password),
-                Role = "user"
+                Role = Roles.User.ToString()
             });
         }
 
         public async Task<object> CheckUser(User user)
         {
-            var founduser = await _userRepository.CheckUser(new User
+            var checkUser = await _userRepository.CheckUser(new User
                 {Login = user.Login, Password = HashFunc.GetHashFromPassword(user.Password), Role = user.Role});
-            if (founduser == null) return null;
+            if (checkUser == null) return null;
 
             var foundUser = new User
             {
-                Login = founduser.Login,
-                Password = founduser.Password,
-                Role = founduser.Role
+                Login = checkUser.Login,
+                Password = checkUser.Password,
+                Role = checkUser.Role
             };
 
             var identity = ClaimsService.GetIdentity(foundUser);
             if (identity == null) return null;
 
-            var jwttoken = TokenService.CreateToken(identity);
-            if (jwttoken != null)
+            var jwtToken = TokenService.CreateToken(identity);
+            if (jwtToken != null)
             {
                 var newRefreshToken = TokenService.GenerateRefreshToken();
-                await _refreshTokensRepository.SaveRefreshToken(founduser.Login, newRefreshToken);
+                await _refreshTokensRepository.SaveRefreshToken(checkUser.Login, newRefreshToken);
 
                 var tokens = new
                 {
-                    token = jwttoken,
+                    token = jwtToken,
                     refreshToken = newRefreshToken
                 };
 

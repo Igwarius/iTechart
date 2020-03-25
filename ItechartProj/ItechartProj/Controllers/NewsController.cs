@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using ItechartProj.DAL.Models;
 using ItechartProj.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -8,7 +7,7 @@ using static ItechartProj.DAL.Repository.Classes.NewsRepository;
 
 namespace ItechartProj.Controllers
 {
-    [Route("api/News")]
+    [Route("news")]
     [ApiController]
     public class NewsController : Controller
     {
@@ -21,9 +20,8 @@ namespace ItechartProj.Controllers
             _commentService = commentService;
         }
 
-        //[Authorize(Policy = "MyPolicy" ) ]
         [HttpGet]
-        [Route("News")]
+        [Route("news")]
         public async Task<IActionResult> GetAllNews()
         {
             var news = await _newsService.GetNews();
@@ -31,7 +29,7 @@ namespace ItechartProj.Controllers
         }
 
         [HttpGet]
-        [Route("News/{id}")]
+        [Route("news/{id}")]
         public async Task<IActionResult> GetNewsById(int id)
         {
             var news = await _newsService.GetNewsById(id);
@@ -39,7 +37,7 @@ namespace ItechartProj.Controllers
         }
 
         [HttpGet]
-        [Route("Comments/{id}")]
+        [Route("comments/{id}")]
         public async Task<IActionResult> GetCommentsForNews(int id)
         {
             var comments = await _commentService.GetCommentsForNews(id);
@@ -47,10 +45,10 @@ namespace ItechartProj.Controllers
         }
 
         [HttpGet]
-        [Route("NewsByCategory/{CategoryID}")]
+        [Route("news-by-category/{CategoryID}")]
         public async Task<IActionResult> GetNewsByCategory(int categoryId)
         {
-            if (categoryId != 0)
+            if (categoryId >= 0)
             {
                 var news = await _newsService.GetNewsByCategory(categoryId);
                 return Ok(news);
@@ -60,10 +58,10 @@ namespace ItechartProj.Controllers
         }
 
         [HttpGet]
-        [Route("NewsBySubCategory/{SubCategoryID}")]
+        [Route("news-by-sub-category/{SubCategoryID}")]
         public async Task<IActionResult> GetNewsBySubCategory(int subCategoryId)
         {
-            if (subCategoryId != 0)
+            if (subCategoryId >= 0)
             {
                 var news = await _newsService.GetNewsBySubCategory(subCategoryId);
                 return Ok(news);
@@ -73,23 +71,18 @@ namespace ItechartProj.Controllers
         }
 
         [HttpGet]
-        [Route("SortNews/{sortparam}")]
+        [Route("sort-news/{sortparam}")]
         public async Task<IActionResult> GetSortNews(SortParam sortparam)
         {
-            if (Enum.IsDefined(typeof(SortParam), sortparam))
-            {
-                var news = await _newsService.GetSortNews(sortparam);
-                return Ok(news);
-            }
-
-            return BadRequest();
+            var news = await _newsService.GetSortNews(sortparam);
+            return Ok(news);
         }
 
         [HttpGet]
-        [Route("SubCategoryByCategory/{CategoryID}")]
+        [Route("sub-category-by-category/{CategoryID}")]
         public async Task<IActionResult> GetSubCategoryByCategory(int categoryId)
         {
-            if (categoryId != 0)
+            if (categoryId >= 0)
             {
                 var subCategories = await _newsService.GetSubCategoryByCategory(categoryId);
                 return Ok(subCategories);
@@ -99,7 +92,7 @@ namespace ItechartProj.Controllers
         }
 
         [HttpGet]
-        [Route("Categories")]
+        [Route("categories")]
         public async Task<IActionResult> GetAllCategories()
         {
             var news = await _newsService.GetCategories();
@@ -107,7 +100,7 @@ namespace ItechartProj.Controllers
         }
 
         [HttpGet]
-        [Route("SubCategories")]
+        [Route("sub-categories")]
         public async Task<IActionResult> GetSubAllCategories()
         {
             var news = await _newsService.GetSubCategories();
@@ -116,48 +109,27 @@ namespace ItechartProj.Controllers
 
         [Authorize(Policy = "MyPolicy")]
         [HttpPost]
-        [Route("Comment")]
+        [Route("comment")]
         public async Task<IActionResult> AddComment([FromBody] Comment comment)
         {
-            try
-            {
-                await _commentService.AddComments(comment);
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            await _commentService.AddComments(comment);
+            return Ok();
         }
 
         [HttpGet]
-        [Route("Views/{id}")]
+        [Route("views/{id}")]
         public async Task<IActionResult> AddViews(int id)
         {
-            try
-            {
-                await _newsService.AddViews(id);
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            await _newsService.AddViews(id);
+            return Ok();
         }
 
         [HttpPost]
-        [Route("News")]
+        [Route("news")]
         public async Task<IActionResult> AddNews([FromBody] News news)
         {
-            try
-            {
-                await _newsService.AddNews(news);
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            await _newsService.AddNews(news);
+            return Ok();
         }
     }
 }

@@ -31,9 +31,9 @@ namespace ItechartProj.DAL.Repository.Classes
 
         public async Task AddUser(User user)
         {
-            var existinguser = await _context.Users.FirstOrDefaultAsync(x => x.Login == user.Login);
+            var existingUser = await _context.Users.FirstOrDefaultAsync(x => x.Login == user.Login);
 
-            if (existinguser == null)
+            if (existingUser == null)
                 _context.Users.Add(user);
             else
                 throw new Exception();
@@ -43,9 +43,9 @@ namespace ItechartProj.DAL.Repository.Classes
 
         public async Task<User> CheckUser(User user)
         {
-            var founduser =
+            var foundUser =
                 await _context.Users.FirstOrDefaultAsync(x => x.Login == user.Login && x.Password == user.Password);
-            if (founduser != null) return founduser;
+            if (foundUser != null) return foundUser;
             return null;
         }
     }

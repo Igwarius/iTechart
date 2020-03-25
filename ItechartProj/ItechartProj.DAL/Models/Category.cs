@@ -10,8 +10,10 @@ namespace ItechartProj.DAL.Models
             SubCategories = new List<SubCategory>();
         }
 
-        [Key] public int Id { get; set; }
+        [Key] 
+        public int Id { get; set; }
         public List<SubCategory> SubCategories { get; set; }
-        [Required] public string Name { get; set; }
+        [Required]
+        public string Name { get; set; }
     }
 }
