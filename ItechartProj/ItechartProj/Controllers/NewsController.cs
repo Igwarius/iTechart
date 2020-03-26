@@ -1,13 +1,19 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Security.Cryptography.X509Certificates;
+using System.Threading.Tasks;
 using ItechartProj.DAL.Models;
 using ItechartProj.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Razor.Language.Intermediate;
+using Newtonsoft.Json;
 using static ItechartProj.DAL.Repository.Classes.NewsRepository;
 
 namespace ItechartProj.Controllers
 {
-    [Route("news")]
+    [Route("News")]
     [ApiController]
     public class NewsController : Controller
     {
@@ -21,7 +27,7 @@ namespace ItechartProj.Controllers
         }
 
         [HttpGet]
-        [Route("news")]
+        [Route("News")]
         public async Task<IActionResult> GetAllNews()
         {
             var news = await _newsService.GetNews();
@@ -29,7 +35,7 @@ namespace ItechartProj.Controllers
         }
 
         [HttpGet]
-        [Route("news/{id}")]
+        [Route("News/{id}")]
         public async Task<IActionResult> GetNewsById(int id)
         {
             var news = await _newsService.GetNewsById(id);
@@ -43,9 +49,42 @@ namespace ItechartProj.Controllers
             var comments = await _commentService.GetCommentsForNews(id);
             return Ok(comments);
         }
+    
+        [HttpGet]
+        [Route("full-news/{id}")]
+        public async Task<IActionResult> GetFullNewsById(int id)
+        {
+            var news = await _newsService.GetNewsById(id);
+            var comments = await _commentService.GetCommentsForNews(id);
+            NewsWithComments newsWithComments = new NewsWithComments
+            {
+                News = news.ToList(),
+                Comment = comments.ToList()
+            };
+            
+            string serial = JsonConvert.SerializeObject(newsWithComments).ToLowerInvariant();
+            return Ok(serial);
+        }
 
         [HttpGet]
-        [Route("news-by-category/{CategoryID}")]
+        [Route("news-with-category")]
+        public async Task<IActionResult> GetNewsWithCategory()
+        {
+
+            var news = await _newsService.GetNews();
+            var categories = await _newsService.GetCategories();
+            NewsWithCategories newsWithCategories = new NewsWithCategories()
+            {
+                News = news.ToList(),
+                Categories = categories.ToList()
+            };
+            
+            string serial = JsonConvert.SerializeObject(newsWithCategories).ToLowerInvariant();
+            return Ok(serial);
+        }
+
+        [HttpGet]
+        [Route("News-by-category/{CategoryID}")]
         public async Task<IActionResult> GetNewsByCategory(int categoryId)
         {
             if (categoryId >= 0)
@@ -58,7 +97,7 @@ namespace ItechartProj.Controllers
         }
 
         [HttpGet]
-        [Route("news-by-sub-category/{SubCategoryID}")]
+        [Route("News-by-sub-category/{SubCategoryID}")]
         public async Task<IActionResult> GetNewsBySubCategory(int subCategoryId)
         {
             if (subCategoryId >= 0)
@@ -71,7 +110,7 @@ namespace ItechartProj.Controllers
         }
 
         [HttpGet]
-        [Route("sort-news/{sortparam}")]
+        [Route("sort-News/{sortparam}")]
         public async Task<IActionResult> GetSortNews(SortParam sortparam)
         {
             var news = await _newsService.GetSortNews(sortparam);
@@ -109,7 +148,7 @@ namespace ItechartProj.Controllers
 
         [Authorize(Policy = "MyPolicy")]
         [HttpPost]
-        [Route("comment")]
+        [Route("Comment")]
         public async Task<IActionResult> AddComment([FromBody] Comment comment)
         {
             await _commentService.AddComments(comment);
@@ -125,7 +164,7 @@ namespace ItechartProj.Controllers
         }
 
         [HttpPost]
-        [Route("news")]
+        [Route("News")]
         public async Task<IActionResult> AddNews([FromBody] News news)
         {
             await _newsService.AddNews(news);

@@ -83,8 +83,6 @@ namespace ItechartProj
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            app.UseMiddleware(typeof(ErrorHandlingMiddleware));
-            app.UseMvc();
             app.UseCors(opts => opts
                 .WithOrigins(
                     "http://localhost:4200")
@@ -92,6 +90,9 @@ namespace ItechartProj
                 .AllowAnyMethod()
                 .AllowCredentials()
             );
+            app.UseMiddleware(typeof(ErrorHandlingMiddleware));
+            app.UseMvc();
+        
             if (env.IsDevelopment()) app.UseDeveloperExceptionPage();
             app.UseAuthentication();
 
