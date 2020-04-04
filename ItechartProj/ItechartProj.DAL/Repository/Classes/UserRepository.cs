@@ -43,10 +43,25 @@ namespace ItechartProj.DAL.Repository.Classes
 
         public async Task<User> CheckUser(User user)
         {
+            var bannedUser = await _context.BannedUsers.FirstOrDefaultAsync(x => x.Login == user.Login);
+            if (bannedUser != null)
+                return null;
             var foundUser =
                 await _context.Users.FirstOrDefaultAsync(x => x.Login == user.Login && x.Password == user.Password);
             if (foundUser != null) return foundUser;
             return null;
+        }
+
+        public async Task BanUser(BannedUser bannedUser)
+        {
+            var existingUser = await _context.BannedUsers.FirstOrDefaultAsync(x => x.Login == bannedUser.Login);
+
+            if (existingUser == null)
+                _context.BannedUsers.Add(bannedUser);
+            else
+                throw new Exception();
+
+            await _context.SaveChangesAsync();
         }
     }
 }

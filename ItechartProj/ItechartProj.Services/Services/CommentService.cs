@@ -20,7 +20,7 @@ namespace ItechartProj.Services.Services
             return _commentRepository.AddComments(new Comment
             {
                 Id = comment.Id,
-                Likes = 0,
+                LikesCount = 0,
 
                 Login = comment.Login,
                 NewsId = comment.NewsId,

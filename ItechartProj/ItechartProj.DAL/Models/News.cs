@@ -30,5 +30,8 @@ namespace ItechartProj.DAL.Models
         [ForeignKey("SubCategory")]
         public int SubCategoryId { get; set; }
         public List<Comment> Comments { get; set; }
+        [Required]
+        public  bool IsArchived { get; set; }
+      
     }
 }

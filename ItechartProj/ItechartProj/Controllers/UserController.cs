@@ -42,5 +42,13 @@ namespace ItechartProj.Controllers
             if (response != null) return Ok(response);
             return NotFound();
         }
+
+        [HttpPost]
+        [Route("ban-user")]
+        public async Task<IActionResult> BanUser([FromBody] BannedUser user)
+        {
+            await _userService.BanUser(user);
+            return Ok();
+        }
     }
 }

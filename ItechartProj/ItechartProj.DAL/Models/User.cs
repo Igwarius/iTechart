@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ItechartProj.DAL.Models
@@ -14,5 +15,11 @@ namespace ItechartProj.DAL.Models
         public string Password { get; set; }
 
         public string Role { get; set; }
+        public BannedUser Banned { get; set; }
+        public ICollection<Like> Likes { get; set; }
+        public User()
+        {
+            Likes = new List<Like>();
+        }
     }
 }

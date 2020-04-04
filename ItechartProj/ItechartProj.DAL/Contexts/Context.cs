@@ -17,5 +17,7 @@ namespace ItechartProj.DAL.Contexts
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<SubCategory> SubCategories { get; set; }
+        public DbSet<BannedUser> BannedUsers { get; set; }
+        public DbSet<Like> Likes { get; set; }
     }
 }

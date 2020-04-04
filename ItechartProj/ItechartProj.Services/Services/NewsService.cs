@@ -75,5 +75,30 @@ namespace ItechartProj.Services.Services
         {
             return await _newsRepository.GetNewsById(id);
         }
+
+        public async Task ArchivedNews(int id)
+        {
+            await _newsRepository.ArchivedNews(id);
+        }
+
+        public async Task ReArchivedNews(int id)
+        {
+            await _newsRepository.ReArchivedNews(id);
+        }
+
+        public async Task AddLike(string login, int id)
+        {
+            await _newsRepository.AddLike(login, id);
+        }
+
+        public async Task<IEnumerable<Like>> GetLike(string login, int id)
+        {
+            return await _newsRepository.GetLike(login, id);
+        }
+
+        public async Task UnLike(string login, int id)
+        {
+            await _newsRepository.UnLike(login, id);
+        }
     }
 }

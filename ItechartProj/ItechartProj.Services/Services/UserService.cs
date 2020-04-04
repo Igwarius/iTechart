@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using ItechartProj.Controllers;
 using ItechartProj.DAL.Models;
@@ -23,9 +24,9 @@ namespace ItechartProj.Services.Services
             return await _userRepository.GetUsers();
         }
 
-        public async Task<User> GetCurrentUser(string Username)
+        public async Task<User> GetCurrentUser(string username)
         {
-            var foundUser = await _userRepository.GetCurrentUser(Username);
+            var foundUser = await _userRepository.GetCurrentUser(username);
             if (foundUser == null) return null;
 
             return foundUser;
@@ -39,6 +40,17 @@ namespace ItechartProj.Services.Services
                 Password = HashFunc.GetHashFromPassword(
                     user.Password),
                 Role = Roles.User.ToString()
+            });
+        }
+
+        public Task BanUser(BannedUser user)
+        {
+            return _userRepository.BanUser(new BannedUser
+            {
+                Login = user.Login,
+                BanDate = DateTime.Now,
+                Reason = user.Reason,
+                Period = user.Period
             });
         }
 
