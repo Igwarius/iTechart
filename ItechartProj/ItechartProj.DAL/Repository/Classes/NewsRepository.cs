@@ -72,7 +72,7 @@ namespace ItechartProj.DAL.Repository.Classes
             await _context.SaveChangesAsync();
         }
 
-        public async Task ReArchivedNews(int id)
+        public async Task RearchivedNews(int id)
         {
             _context.News.First(x => x.Id == id).IsArchived =
                 false;
@@ -86,7 +86,7 @@ namespace ItechartProj.DAL.Repository.Classes
             if (existingNews == null)
             {
                 news.IsArchived = false;
-                _context.News.Add(news);
+              await  _context.News.AddAsync(news);
             }
 
             await _context.SaveChangesAsync();
@@ -128,7 +128,7 @@ namespace ItechartProj.DAL.Repository.Classes
             };
             _context.Comments.Where(x => x.Id == id).FirstOrDefault().LikesCount =
                 _context.Comments.Where(x => x.Id == id).FirstOrDefault().LikesCount +1;
-            _context.Likes.Add(like);
+           await _context.Likes.AddAsync(like);
             await _context.SaveChangesAsync();
         }
 
@@ -137,7 +137,7 @@ namespace ItechartProj.DAL.Repository.Classes
             return await Task.FromResult(_context.Likes.Where(x => x.Id == id && x.Login == login));
         }
 
-        public async Task UnLike(string login, int id)
+        public async Task Unlike(string login, int id)
         {
             _context.Likes.Remove(_context.Likes.Where(x => x.Id == id && x.Login == login)
                 .FirstOrDefault());

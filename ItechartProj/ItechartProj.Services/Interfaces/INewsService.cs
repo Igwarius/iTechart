@@ -19,10 +19,10 @@ namespace ItechartProj.Services.Interfaces
         Task<IEnumerable<News>> GetNewsById(int id);
         Task AddViews(int id); 
         Task ArchivedNews(int id);
-        Task ReArchivedNews(int id);
+        Task RearchivedNews(int id);
         Task AddLike(string login, int id);
         Task<IEnumerable<Like>> GetLike(string login, int id);
-        Task UnLike(string login, int id);
+        Task Unlike(string login, int id);
 
     }
 }

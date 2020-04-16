@@ -168,9 +168,9 @@ namespace ItechartProj.Controllers
 
         [HttpGet]
         [Route("rearchived-news/{id}")]
-        public async Task<IActionResult> ReArchivedNews(int id)
+        public async Task<IActionResult> RearchivedNews(int id)
         {
-            await _newsService.ReArchivedNews(id);
+            await _newsService.RearchivedNews(id);
             return Ok();
         }
 
@@ -200,9 +200,9 @@ namespace ItechartProj.Controllers
 
         [HttpDelete]
         [Route("like/{login}/{id}")]
-        public async Task<IActionResult> UnLike(string login, int id)
+        public async Task<IActionResult> Unlike(string login, int id)
         {
-            await _newsService.UnLike(login, id);
+            await _newsService.Unlike(login, id);
             return Ok();
         }
     }

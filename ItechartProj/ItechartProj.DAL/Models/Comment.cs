@@ -19,7 +19,7 @@ namespace ItechartProj.DAL.Models
 
         [Required] 
         public int LikesCount { get; set; }
-        public ICollection<Like> Likes { get; set; }
+        public IEnumerable<Like> Likes { get; set; }
         public Comment()
         {
             Likes = new List<Like>();

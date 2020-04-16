@@ -27,14 +27,17 @@ namespace ItechartProj.Services.Services
         public async Task<User> GetCurrentUser(string username)
         {
             var foundUser = await _userRepository.GetCurrentUser(username);
-            if (foundUser == null) return null;
+            if (foundUser == null)
+            {
+                return null;
+            }
 
             return foundUser;
         }
 
-        public Task AddUser(User user)
+        public async Task AddUser(User user)
         {
-            return _userRepository.AddUser(new User
+            await _userRepository.AddUser(new User
             {
                 Login = user.Login,
                 Password = HashFunc.GetHashFromPassword(
@@ -43,9 +46,9 @@ namespace ItechartProj.Services.Services
             });
         }
 
-        public Task BanUser(BannedUser user)
+        public async Task BanUser(BannedUser user)
         {
-            return _userRepository.BanUser(new BannedUser
+          await _userRepository.BanUser(new BannedUser
             {
                 Login = user.Login,
                 BanDate = DateTime.Now,
@@ -54,11 +57,14 @@ namespace ItechartProj.Services.Services
             });
         }
 
-        public async Task<object> CheckUser(User user)
+        public async Task<Tokens> CheckUser(User user)
         {
             var checkUser = await _userRepository.CheckUser(new User
                 {Login = user.Login, Password = HashFunc.GetHashFromPassword(user.Password), Role = user.Role});
-            if (checkUser == null) return null;
+            if (checkUser == null)
+            {
+                return null;
+            }
 
             var foundUser = new User
             {
@@ -68,7 +74,7 @@ namespace ItechartProj.Services.Services
             };
 
             var identity = ClaimsService.GetIdentity(foundUser);
-            if (identity == null) return null;
+            if (identity == null){ return null;}
 
             var jwtToken = TokenService.CreateToken(identity);
             if (jwtToken != null)
@@ -76,10 +82,10 @@ namespace ItechartProj.Services.Services
                 var newRefreshToken = TokenService.GenerateRefreshToken();
                 await _refreshTokensRepository.SaveRefreshToken(checkUser.Login, newRefreshToken);
 
-                var tokens = new
+                Tokens tokens = new Tokens
                 {
-                    token = jwtToken,
-                    refreshToken = newRefreshToken
+                    Token = jwtToken,
+                    RefreshToken = newRefreshToken
                 };
 
                 return tokens;

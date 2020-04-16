@@ -2,6 +2,7 @@
 using ItechartProj.DAL.Models;
 using ItechartProj.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace ItechartProj.Controllers
 {
@@ -38,8 +39,13 @@ namespace ItechartProj.Controllers
         [Route("sign-in")]
         public async Task<IActionResult> CheckUser([FromBody] User user)
         {
+
             var response = await _userService.CheckUser(user);
-            if (response != null) return Ok(response);
+            if (response != null)
+            {
+               //var serial = JsonConvert.SerializeObject(response);
+                return Ok(response);
+            }
             return NotFound();
         }
 

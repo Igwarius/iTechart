@@ -21,7 +21,10 @@ namespace ItechartProj.DAL.Repository.Classes
         {
             var existingNews = await _context.News.FirstOrDefaultAsync(x => x.Id == comment.Id);
 
-            if (existingNews == null) _context.Comments.Add(comment);
+            if (existingNews == null)
+            {
+                _context.Comments.Add(comment);
+            }
 
             await _context.SaveChangesAsync();
         }

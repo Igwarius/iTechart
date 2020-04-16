@@ -6,7 +6,7 @@ namespace ItechartProj.DAL.Models
 {
     public class NewsWithComments
     {
-        public List<News> News = new List<News>();
-        public List<Comment> Comment = new List<Comment>();
+        public IEnumerable<News> News { get; set; }
+        public IEnumerable<Comment> Comment { get; set; }
     }
 }

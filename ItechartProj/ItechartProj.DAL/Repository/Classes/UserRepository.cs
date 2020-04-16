@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using ItechartProj.DAL.Contexts;
 using ItechartProj.DAL.Models;
 using ItechartProj.DAL.Repository.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualBasic;
 
 namespace ItechartProj.DAL.Repository.Classes
 {
@@ -25,7 +25,10 @@ namespace ItechartProj.DAL.Repository.Classes
         public async Task<User> GetCurrentUser(string login)
         {
             var user = await _context.Users.FindAsync(login);
-            if (user != null) return user;
+            if (user != null)
+            {
+                return user;
+            }
             return null;
         }
 
@@ -34,9 +37,10 @@ namespace ItechartProj.DAL.Repository.Classes
             var existingUser = await _context.Users.FirstOrDefaultAsync(x => x.Login == user.Login);
 
             if (existingUser == null)
-                _context.Users.Add(user);
-            else
-                throw new Exception();
+            {
+              await  _context.Users.AddAsync(user);
+
+            }
 
             await _context.SaveChangesAsync();
         }
@@ -45,10 +49,16 @@ namespace ItechartProj.DAL.Repository.Classes
         {
             var bannedUser = await _context.BannedUsers.FirstOrDefaultAsync(x => x.Login == user.Login);
             if (bannedUser != null)
+            { 
                 return null;
+            }
             var foundUser =
                 await _context.Users.FirstOrDefaultAsync(x => x.Login == user.Login && x.Password == user.Password);
-            if (foundUser != null) return foundUser;
+            if (foundUser != null)
+            {
+                return foundUser;
+
+            }
             return null;
         }
 
@@ -57,9 +67,9 @@ namespace ItechartProj.DAL.Repository.Classes
             var existingUser = await _context.BannedUsers.FirstOrDefaultAsync(x => x.Login == bannedUser.Login);
 
             if (existingUser == null)
-                _context.BannedUsers.Add(bannedUser);
-            else
-                throw new Exception();
+            {
+              await _context.BannedUsers.AddAsync(bannedUser);
+            }
 
             await _context.SaveChangesAsync();
         }

@@ -15,9 +15,9 @@ namespace ItechartProj.Services.Services
             _commentRepository = commentRepository;
         }
 
-        public Task AddComments(Comment comment)
+        public async Task AddComments(Comment comment)
         {
-            return _commentRepository.AddComments(new Comment
+            await _commentRepository.AddComments(new Comment
             {
                 Id = comment.Id,
                 LikesCount = 0,

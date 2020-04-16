@@ -23,7 +23,10 @@ namespace ItechartProj.DAL.Repository.Classes
         public async Task DeleteRefreshToken(string username)
         {
             var refreshToken = await _commonContext.RefreshTokens.FindAsync(username);
-            if (refreshToken != null) _commonContext.Remove(refreshToken);
+            if (refreshToken != null)
+            {
+                _commonContext.Remove(refreshToken);
+            }
             await _commonContext.SaveChangesAsync();
         }
 
@@ -31,7 +34,10 @@ namespace ItechartProj.DAL.Repository.Classes
         {
             var refreshToken = new RefreshToken {Login = login, Token = newRefreshToken};
             var existingTokens = await _commonContext.RefreshTokens.FindAsync(login);
-            if (existingTokens != null) _commonContext.RefreshTokens.Remove(existingTokens);
+            if (existingTokens != null)
+            {
+                _commonContext.RefreshTokens.Remove(existingTokens);
+            }
 
             _commonContext.RefreshTokens.Add(refreshToken);
             await _commonContext.SaveChangesAsync();

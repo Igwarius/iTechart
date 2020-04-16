@@ -92,8 +92,12 @@ namespace ItechartProj
             );
             app.UseMiddleware(typeof(ErrorHandlingMiddleware));
             app.UseMvc();
-        
-            if (env.IsDevelopment()) app.UseDeveloperExceptionPage();
+
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+
+            }
             app.UseAuthentication();
 
             app.UseAuthorization();

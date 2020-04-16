@@ -6,7 +6,7 @@ namespace ItechartProj.DAL.Models
 {
     public class NewsWithCategories
     {
-        public List<News> News = new List<News>();
-        public List<Category> Categories = new List<Category>();
+        public IEnumerable<News> News { get; set; }
+        public IEnumerable<Category> Categories { get; set; }
     }
 }

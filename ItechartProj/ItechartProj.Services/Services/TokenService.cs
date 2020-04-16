@@ -29,14 +29,19 @@ namespace ItechartProj.Services.Services
 
         public static List<Claim> GetClaims(string token)
         {
-            if (token == null) return null;
+            if (token == null)
+            {
+                return null;
+            }
             var claims = new List<Claim>();
             var handler = new JwtSecurityTokenHandler();
             var readToken = handler.ReadToken(token) as JwtSecurityToken;
 
             if (readToken != null)
+            {
                 foreach (var item in readToken.Claims)
                     claims.Add(item);
+            }
 
             return claims;
         }
@@ -70,7 +75,9 @@ namespace ItechartProj.Services.Services
             {
                 var tokenClaims = GetClaims(token);
                 if (tokenClaims != null)
+                {
                     return tokenClaims;
+                }
             }
 
             return null;

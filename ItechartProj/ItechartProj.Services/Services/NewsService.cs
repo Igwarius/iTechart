@@ -42,9 +42,9 @@ namespace ItechartProj.Services.Services
             return await _newsRepository.GetSubCategories();
         }
 
-        public Task AddNews(News news)
+        public async Task AddNews(News news)
         {
-            return _newsRepository.AddNews(new News
+            await _newsRepository.AddNews(new News
             {
                 Id = news.Id,
                 Image = news.Image,
@@ -81,9 +81,9 @@ namespace ItechartProj.Services.Services
             await _newsRepository.ArchivedNews(id);
         }
 
-        public async Task ReArchivedNews(int id)
+        public async Task RearchivedNews(int id)
         {
-            await _newsRepository.ReArchivedNews(id);
+            await _newsRepository.RearchivedNews(id);
         }
 
         public async Task AddLike(string login, int id)
@@ -96,9 +96,9 @@ namespace ItechartProj.Services.Services
             return await _newsRepository.GetLike(login, id);
         }
 
-        public async Task UnLike(string login, int id)
+        public async Task Unlike(string login, int id)
         {
-            await _newsRepository.UnLike(login, id);
+            await _newsRepository.Unlike(login, id);
         }
     }
 }

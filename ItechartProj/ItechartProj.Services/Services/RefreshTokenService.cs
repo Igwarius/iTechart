@@ -17,7 +17,10 @@ namespace WebServer.Services.Services
         public async Task<RefreshToken> GetRefreshToken(string login)
         {
             var res = await _refreshTokenRepository.GetRefreshToken(login);
-            if (res == null) return null;
+            if (res == null)
+            {
+                return null;
+            }
 
             var refreshToken = new RefreshToken
             {
