@@ -1,65 +1,60 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using ItechartProj.DAL.Models;
 using ItechartProj.Services.Interfaces;
-using Microsoft.AspNetCore.Cors;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace ItechartProj.Controllers
 {
-    [Route("api/User")]
+    [Route("user")]
     [ApiController]
     public class UserController : Controller
     {
-        private readonly IUserService userService;
-        public UserController(IUserService userService)
+        private readonly IRefreshTokenService _refreshTokenService;
+        private readonly IUserService _userService;
+
+        public UserController(IUserService userService, IRefreshTokenService refreshTokenService)
         {
-            this.userService = userService;
-            
+            _userService = userService;
+            _refreshTokenService = refreshTokenService;
         }
-        [EnableCors]
+
         [HttpGet]
-        [Route("GetAllUsers")]
+        [Route("users")]
         public async Task<IActionResult> GetAllUsers()
         {
-            var users = await userService.GetUsers();
+            var users = await _userService.GetUsers();
             return Ok(users);
         }
-        [EnableCors]
+
         [HttpPost]
-        [Route("AddUser")]
-        public async Task<IActionResult> AddUser([FromBody]User user)
+        [Route("user")]
+        public async Task<IActionResult> AddUser([FromBody] User user)
         {
-            try
-            {
-                await userService.AddUser(user);
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-        [EnableCors]
-        [HttpPost]
-        [Route("SignIn")]
-        public async Task<IActionResult> CheckUser([FromBody]User user)
-        {
-            try
-            {
-                var response = await userService.CheckUser(user);
-                if (response != null) return Ok(response);
-                else return NotFound();
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            await _userService.AddUser(user);
+            return Ok();
         }
 
+        [HttpPost]
+        [Route("sign-in")]
+        public async Task<IActionResult> CheckUser([FromBody] User user)
+        {
 
+            var response = await _userService.CheckUser(user);
+            if (response != null)
+            {
+               //var serial = JsonConvert.SerializeObject(response);
+                return Ok(response);
+            }
+            return NotFound();
+        }
+
+        [HttpPost]
+        [Route("ban-user")]
+        public async Task<IActionResult> BanUser([FromBody] BannedUser user)
+        {
+            await _userService.BanUser(user);
+            return Ok();
+        }
     }
 }

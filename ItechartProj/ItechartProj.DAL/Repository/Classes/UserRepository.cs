@@ -1,49 +1,77 @@
-﻿using ItechartProj.DAL.Context;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using ItechartProj.DAL.Contexts;
 using ItechartProj.DAL.Models;
 using ItechartProj.DAL.Repository.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualBasic;
 
 namespace ItechartProj.DAL.Repository.Classes
 {
-  public  class UserRepository : IUserRepository
+    public class UserRepository : IUserRepository
     {
-        private readonly Contexts contexts;
-        public UserRepository(Contexts contexts)
+        private readonly Context _context;
+
+        public UserRepository(Context context)
         {
-            this.contexts = contexts;
+            _context = context;
         }
+
         public async Task<IEnumerable<User>> GetUsers()
         {
-            return await Task.FromResult(contexts.Users.Where(x => x==x));
+            return await Task.FromResult(_context.Users);
         }
-        public async Task<User> GetCurrentUser(string Login)
+
+        public async Task<User> GetCurrentUser(string login)
         {
-            var user = await contexts.Users.FindAsync(Login);
-            if (user != null) return user;
+            var user = await _context.Users.FindAsync(login);
+            if (user != null)
+            {
+                return user;
+            }
             return null;
         }
+
         public async Task AddUser(User user)
         {
-            var existinguser = await contexts.Users.FirstOrDefaultAsync(x => x.Login == user.Login);
+            var existingUser = await _context.Users.FirstOrDefaultAsync(x => x.Login == user.Login);
 
-            if (existinguser == null)
+            if (existingUser == null)
             {
-               
-                contexts.Users.Add(user);
+              await  _context.Users.AddAsync(user);
+
             }
 
-            await contexts.SaveChangesAsync();
+            await _context.SaveChangesAsync();
         }
+
         public async Task<User> CheckUser(User user)
         {
-            var founduser = await contexts.Users.FirstOrDefaultAsync(x => x.Login == user.Login && x.password == user.password);
-            if (founduser != null) return founduser;
+            var bannedUser = await _context.BannedUsers.FirstOrDefaultAsync(x => x.Login == user.Login);
+            if (bannedUser != null)
+            { 
+                return null;
+            }
+            var foundUser =
+                await _context.Users.FirstOrDefaultAsync(x => x.Login == user.Login && x.Password == user.Password);
+            if (foundUser != null)
+            {
+                return foundUser;
+
+            }
             return null;
+        }
+
+        public async Task BanUser(BannedUser bannedUser)
+        {
+            var existingUser = await _context.BannedUsers.FirstOrDefaultAsync(x => x.Login == bannedUser.Login);
+
+            if (existingUser == null)
+            {
+              await _context.BannedUsers.AddAsync(bannedUser);
+            }
+
+            await _context.SaveChangesAsync();
         }
     }
 }

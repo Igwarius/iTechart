@@ -7,8 +7,8 @@ namespace ItechartProj.DAL.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AlterColumn<string>(
-                name: "password",
-                table: "Users",
+                "Password",
+                "Users",
                 maxLength: 600,
                 nullable: false,
                 oldClrType: typeof(string),
@@ -18,9 +18,9 @@ namespace ItechartProj.DAL.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AlterColumn<string>(
-                name: "password",
-                table: "Users",
-                type: "nvarchar(max)",
+                "Password",
+                "Users",
+                "nvarchar(max)",
                 nullable: false,
                 oldClrType: typeof(string),
                 oldMaxLength: 600);

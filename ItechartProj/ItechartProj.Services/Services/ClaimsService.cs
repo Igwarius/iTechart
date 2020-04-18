@@ -1,24 +1,24 @@
-﻿using ItechartProj.DAL.Models;
-using Microsoft.IdentityModel.Tokens;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using ItechartProj.DAL.Models;
+using Microsoft.IdentityModel.Tokens;
 
 namespace ItechartProj.Services.Services
 {
-   public class ClaimsService
+    public class ClaimsService
     {
         public static ClaimsIdentity GetIdentity(User user)
         {
             var claims = new List<Claim>
             {
                 new Claim(ClaimsIdentity.DefaultNameClaimType, user.Login),
-                new Claim(ClaimsIdentity.DefaultRoleClaimType, user.password),
-                
+                new Claim(ClaimsIdentity.DefaultRoleClaimType, user.Role)
             };
-            ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, "Token", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
+            var claimsIdentity = new ClaimsIdentity(claims, "Token", ClaimsIdentity.DefaultNameClaimType,
+                ClaimsIdentity.DefaultRoleClaimType);
             return claimsIdentity;
         }
 
@@ -27,7 +27,7 @@ namespace ItechartProj.Services.Services
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, user.Login),
-               
+                new Claim(ClaimTypes.Role, user.Role)
             };
             return claims;
         }
@@ -36,7 +36,8 @@ namespace ItechartProj.Services.Services
         {
             var tokenValidationParameters = new TokenValidationParameters
             {
-                ValidateAudience = false, //you might want to validate the audience and issuer depending on your use case
+                ValidateAudience =
+                    false, //you might want to validate the audience and issuer depending on your use case
                 ValidateIssuer = false,
                 ValidateIssuerSigningKey = true,
                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(AuthOptions.KEY)),
@@ -47,8 +48,11 @@ namespace ItechartProj.Services.Services
             SecurityToken securityToken;
             var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out securityToken);
             var jwtSecurityToken = securityToken as JwtSecurityToken;
-            if (jwtSecurityToken == null || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
+            if (jwtSecurityToken == null || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256,
+                    StringComparison.InvariantCultureIgnoreCase))
+            {
                 throw new SecurityTokenException("Invalid token");
+            }
 
             return principal;
         }

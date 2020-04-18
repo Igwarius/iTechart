@@ -1,33 +1,30 @@
-﻿using Microsoft.IdentityModel.Tokens;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+using Microsoft.IdentityModel.Tokens;
 
 namespace ItechartProj.Services.Services
 {
-   public class TokenService
+    public class TokenService
     {
         public static object CreateToken(ClaimsIdentity identity)
         {
             var now = DateTime.UtcNow;
 
             var jwt = new JwtSecurityToken(
-                issuer: AuthOptions.ISSUER,
-                audience: AuthOptions.AUDIENCE,
+                AuthOptions.ISSUER,
+                AuthOptions.AUDIENCE,
                 notBefore: now,
                 claims: identity.Claims,
                 expires: now.Add(TimeSpan.FromMinutes(AuthOptions.LIFETIME)),
-                signingCredentials: new SigningCredentials(AuthOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
+                signingCredentials: new SigningCredentials(AuthOptions.GetSymmetricSecurityKey(),
+                    SecurityAlgorithms.HmacSha256));
             var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
 
-            var response = new
-            {
-                access_token = encodedJwt,
-            };
-            return response;
+            return encodedJwt;
         }
 
         public static List<Claim> GetClaims(string token)
@@ -36,27 +33,27 @@ namespace ItechartProj.Services.Services
             {
                 return null;
             }
-            List<Claim> claims = new List<Claim>();
+            var claims = new List<Claim>();
             var handler = new JwtSecurityTokenHandler();
-            var tokenS = handler.ReadToken(token) as JwtSecurityToken;
+            var readToken = handler.ReadToken(token) as JwtSecurityToken;
 
-            if (tokenS != null)
-                foreach (var item in tokenS.Claims)
-                {
+            if (readToken != null)
+            {
+                foreach (var item in readToken.Claims)
                     claims.Add(item);
-                }
+            }
 
             return claims;
         }
 
         public static bool IsExpired(string token)
         {
-            TokenValidationParameters validationParameters =
+            var validationParameters =
                 new TokenValidationParameters
                 {
                     ValidAudience = AuthOptions.AUDIENCE,
                     ValidIssuer = AuthOptions.ISSUER,
-                    IssuerSigningKeys = new[] { new SymmetricSecurityKey(Encoding.ASCII.GetBytes(AuthOptions.KEY)) }
+                    IssuerSigningKeys = new[] {new SymmetricSecurityKey(Encoding.ASCII.GetBytes(AuthOptions.KEY))}
                 };
 
             var validate = new JwtSecurityTokenHandler();
@@ -68,6 +65,7 @@ namespace ItechartProj.Services.Services
             {
                 return true;
             }
+
             return false;
         }
 
@@ -77,8 +75,11 @@ namespace ItechartProj.Services.Services
             {
                 var tokenClaims = GetClaims(token);
                 if (tokenClaims != null)
+                {
                     return tokenClaims;
+                }
             }
+
             return null;
         }
 
@@ -91,7 +92,5 @@ namespace ItechartProj.Services.Services
                 return Convert.ToBase64String(randomNumber);
             }
         }
-
-    
-}
+    }
 }

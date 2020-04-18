@@ -1,80 +1,97 @@
-﻿using ItechartProj.Controllers;
-using ItechartProj.DAL.Context;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using ItechartProj.Controllers;
 using ItechartProj.DAL.Models;
 using ItechartProj.DAL.Repository.Interfaces;
 using ItechartProj.Services.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ItechartProj.Services.Services
 {
     public class UserService : IUserService
     {
-        private readonly IRefreshTokensRepository refreshTokensRepository;
-        private readonly IUserRepository userRepository;
+        private readonly IRefreshTokenRepository _refreshTokensRepository;
+        private readonly IUserRepository _userRepository;
 
-        public UserService(IUserRepository userRepository)
+        public UserService(IUserRepository userRepository, IRefreshTokenRepository refreshTokensRepository)
         {
-            this.userRepository = userRepository;
-
+            _userRepository = userRepository;
+            _refreshTokensRepository = refreshTokensRepository;
         }
+
         public async Task<IEnumerable<User>> GetUsers()
         {
-            return await userRepository.GetUsers();
+            return await _userRepository.GetUsers();
         }
-        public async Task<User> GetCurrentUser(string Username)
-        {
-            var founduser = await userRepository.GetCurrentUser(Username);
-            if (founduser == null) return null;
 
-            return founduser;
-        }
-        public Task AddUser(User user)
+        public async Task<User> GetCurrentUser(string username)
         {
-
-            return userRepository.AddUser(new User
+            var foundUser = await _userRepository.GetCurrentUser(username);
+            if (foundUser == null)
             {
-               Login = user.Login,
-                password = HashFunc.GetHashFromPassword (
-                user.password),
+                return null;
+            }
 
+            return foundUser;
+        }
+
+        public async Task AddUser(User user)
+        {
+            await _userRepository.AddUser(new User
+            {
+                Login = user.Login,
+                Password = HashFunc.GetHashFromPassword(
+                    user.Password),
+                Role = Roles.User.ToString()
             });
         }
 
-        public async Task<object> CheckUser(User user)
+        public async Task BanUser(BannedUser user)
         {
-            var founduser = await userRepository.CheckUser(new User { Login = user.Login, password = HashFunc.GetHashFromPassword(user.password) });
-            if (founduser == null) return null;
-
-          
-
-            User FoundUser = new User
+          await _userRepository.BanUser(new BannedUser
             {
-                Login= founduser.Login,
-                password = founduser.password,
-             
-            };
-
-            var identity = ClaimsService.GetIdentity(FoundUser);
-            if (identity == null) return null;
-
-            var jwttoken = TokenService.CreateToken(identity);
-            if (jwttoken != null)
-            {
-                var newRefreshToken = TokenService.GenerateRefreshToken();
-               // await refreshTokensRepository.SaveRefreshToken(founduser.Login, newRefreshToken);
-
-                var tokens = new
-                {
-                    token = jwttoken,
-                    refreshToken = newRefreshToken
-                };
-                return tokens;
-            }
-            return null;
+                Login = user.Login,
+                BanDate = DateTime.Now,
+                Reason = user.Reason,
+                Period = user.Period
+            });
         }
 
+        public async Task<Tokens> CheckUser(User user)
+        {
+            var checkUser = await _userRepository.CheckUser(new User
+                {Login = user.Login, Password = HashFunc.GetHashFromPassword(user.Password), Role = user.Role});
+            if (checkUser == null)
+            {
+                return null;
+            }
+
+            var foundUser = new User
+            {
+                Login = checkUser.Login,
+                Password = checkUser.Password,
+                Role = checkUser.Role
+            };
+
+            var identity = ClaimsService.GetIdentity(foundUser);
+            if (identity == null){ return null;}
+
+            var jwtToken = TokenService.CreateToken(identity);
+            if (jwtToken != null)
+            {
+                var newRefreshToken = TokenService.GenerateRefreshToken();
+                await _refreshTokensRepository.SaveRefreshToken(checkUser.Login, newRefreshToken);
+
+                Tokens tokens = new Tokens
+                {
+                    Token = jwtToken,
+                    RefreshToken = newRefreshToken
+                };
+
+                return tokens;
+            }
+
+            return null;
+        }
     }
 }
